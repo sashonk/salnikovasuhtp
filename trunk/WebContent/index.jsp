@@ -20,7 +20,7 @@
 		<% if(request.isUserInRole("admin")) { 
 			
 			if(request.getParameter("logout")!=null){
-				request.logout();
+				salnikova.jsp.Helper.logout(request);
 				response.sendRedirect("?");
 			}
 			
