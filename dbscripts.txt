@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS user_roles(
 	PRIMARY KEY (name, role_name)
 );
 
+INSERT INTO departments (name, fullname) VALUES ('ТОХФ', 'Технология органических вещества и химико-фармацевтических средств'); 
 
 
 
