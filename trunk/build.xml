@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Salnikova" default="build" basedir=".">         	
+	<property name="war_name" value="Salnikova.war" />
+	<property name="builddir" value="WebContent/WEB-INF/classes"/>
+	<property  name="distdir" value="dist" />
+	<property name="libs" value="WebContent/WEB-INF/lib" />
+	<property name="ext_libs" value="/tomcat/lib" />
+	<property name="webapps" value="/var/lib/tomcat6/webapps" />
+	
+
+	<target name="build">
+		<mkdir dir="${builddir}"/>
+	        <javac srcdir="src" destdir="${builddir}" encoding="utf-8">
+	                <classpath>
+				<fileset dir="${libs}">
+				          <include name="**/*.jar" />
+				</fileset>
+				<pathelement path="${ext_libs}/servlet-api.jar" />
+			</classpath>
+		</javac>
+
+	</target>
+
+	
+	<target name="dist" depends="build">
+		<delete file="${distdir}/${war_file}" />
+		<war destfile="${distdir}/${war_name}" webxml="WebContent/WEB-INF/web.xml" basedir="WebContent" />		
+		<copy file="${distdir}/${war_name}" todir="${webapps}" />
+	</target>
+	
+
+	       
+	<target name="clean">
+		<delete dir="${builddir}" includeEmptyDirs="true"/>		
+		<delete dir="${distdir}"  includeEmptyDirs="true"/>
+	</target>
+
+
+</project>

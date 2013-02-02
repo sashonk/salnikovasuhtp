@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+
+
+
+body{
+
+	width: 50%;
+	background : #eeeeee;
+	margin:  auto;
+}
+
+table
+{
+	font-size: 18px;
+	border-spacing: 0px;
+}
+
+
+td{
+	border: thin solid black;
+	padding: 5px;
+	text-align: center;
+}
+
+div.content{
+	padding: 30px;
+	
+}
+
+div.header{
+	//border: thin solid;
+	margin-top: 100px;
+//	background: #aaddFF;
+
+
+}
+
+
+div.boot{
+	//border: thin solid;
+//	background: #99CCFF;
+	text-align: center;
+	font-size: 11px;
+}
+
+
+a.admin_btn{
+
+}
