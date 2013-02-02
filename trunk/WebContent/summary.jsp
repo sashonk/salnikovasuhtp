@@ -41,14 +41,14 @@
 	ControlDao ctrlDao = ControlDao.get();
 	List<Control> controls = ctrlDao.getControlList();
 	
-	Collections.sort(controls, new Comparator<Control>() {
+/*	Collections.sort(controls, new Comparator<Control>() {
 
 		@Override
 		public int compare(Control o1, Control o2) {
 
 			return o1.getNumber().compareTo(o2.getNumber());
 		}
-	});
+	});*/
 	
 	
 	GroupsDao gdao = GroupsDao.get();
