@@ -16,11 +16,12 @@
 		<div><a class="navi_link" href="?">на главную</a></div>
 		<div><a class="navi_link" href="?page=control">контроль</a></div>
 		<div><a class="navi_link" href="?page=contacts">контакты</a></div>
+		<div><a class="navi_link" href="?page=schedule">расписание</a></div>		
 		
 		<% if(request.isUserInRole("admin")) { 
 			
 			if(request.getParameter("logout")!=null){
-				salnikova.jsp.Helper.logout(request);
+				session.invalidate();
 				response.sendRedirect("?");
 			}
 			
@@ -79,6 +80,14 @@
 		<%}else if(pg.equals("login")){%>
 		
 		<% response.sendRedirect("login.jsp"); %>	
+		
+		
+		
+		
+		
+		<%}else if(pg.equals("schedule")){%>
+		
+		<% response.sendRedirect("schedule.jsp"); %>	
 		
 		
 		
