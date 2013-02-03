@@ -87,7 +87,7 @@
 		
 		<%}else if(pg.equals("schedule")){%>
 		
-		<% response.sendRedirect("schedule.jsp"); %>	
+		<%@ include file="schedule.jsp" %>	
 		
 		
 		
