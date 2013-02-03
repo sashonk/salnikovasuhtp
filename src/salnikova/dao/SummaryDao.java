@@ -26,8 +26,9 @@ public class SummaryDao extends Dao {
 	public Map<Student, Map<Integer, Attestation>> getAttestationData(
 final Integer groupId) {
 		
-		String sql = "select a.points points, (select case when points is NULL then 1 else 0 end) cs,  a.controlId control, (select c.number from controls c where c.id = control) number, s.firstName name, s.secondName secondName, s.groupId g, s.id sid from "
-				+ "students s left outer join attestations a on a.studentId = s.id where s.groupId = ?  order by secondName desc, number asc";
+		String sql = "select s.id sid, s.firstName firstName, s.secondName secondName, s.groupId groupId, c.id cid, c.name cname, "
+				+ "(select a.points from attestations a where a.studentid = s.id and a.controlid = c.id) points"
+				+ " from students s, controls c where s.groupid = ?";
 
 		Connection c = null;
 		PreparedStatement st = null;
@@ -44,10 +45,10 @@ final Integer groupId) {
 			while (rs.next()) {
 
 				Student s = new Student();
-				s.setFirstName(rs.getString("name"));
+				s.setFirstName(rs.getString("firstName"));
 				s.setSecondName(rs.getString("secondName"));
 				s.setId(rs.getInt("sid"));
-				s.setGroupId(rs.getInt("g"));
+				s.setGroupId(rs.getInt("groupId"));
 
 				Map<Integer, Attestation> attestations = result.get(s);
 				if (attestations == null) {
@@ -56,14 +57,14 @@ final Integer groupId) {
 				}
 				
 				Attestation a = null;
-				if (rs.getInt("cs") == 0) {
+				if (rs.getBigDecimal("points") != null) {
 					a = new Attestation();
-					a.setControlId(rs.getInt("control"));
+					a.setControlId(rs.getInt("cid"));
 					a.setPoints(rs.getBigDecimal("points"));
 					a.setStudentId(s.getId());
 				}
 
-				attestations.put(a.getControlId(), a);
+				attestations.put(rs.getInt("cid"), a);
 
 			}
 
