@@ -14,7 +14,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
-import salnikova.model.util.Document;
+import salnikova.web.Upload;
 
 
 
@@ -53,7 +53,7 @@ public class Util {
             } else {
                 if (item.getName().equals("")) { //$NON-NLS-1$
                     String msg =
-                    		"Файл не найден";
+ "Файл не найден";
                     messages.add(msg);
                     continue;
                 }
@@ -71,7 +71,9 @@ public class Util {
                 }
 
                 if (!contentTypeAllowed) {     
-                    String msg = String.format("Неверный тип %s файла %s. Допустимые форматы: %s", item.getContentType(), item.getName(),
+					String msg = String.format(
+							"Неверный тип %s файла %s. Допустимые форматы: %s",
+							item.getContentType(), item.getName(),
                          Arrays.toString(allowedContentTypes.toArray()));
                     messages.add(msg);
                     continue;
@@ -90,13 +92,13 @@ public class Util {
                 if ((maxFileSize > 0) && (baos.size() > (maxFileSize))) {
                     String msg =
                         String.format(
-                        		"Ошибка! Размер файла %s превышает %d байт", //$NON-NLS-1$
+							"Ошибка! Размер файла %s превышает %d байт", //$NON-NLS-1$
                             item.getName(), Integer.valueOf(maxFileSize));
                     messages.add(msg);
                     continue;
                 }
 
-                Document doc = new Document();
+				Upload doc = new Upload();
                 doc.setContent(baos.toByteArray());
                 doc.setName(item.getName());
                 result.put(item.getFieldName(), doc);
