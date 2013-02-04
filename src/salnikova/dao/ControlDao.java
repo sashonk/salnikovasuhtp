@@ -3,6 +3,7 @@ package salnikova.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -135,7 +136,7 @@ public class ControlDao extends Dao {
 		return result;
 	}
 
-	public void createControl(final Control ctrl) {
+	public Control createControl(final Control ctrl) {
 		String sql = "insert into controls (name, maxpoints, number) values(?, ? , ?)";
 
 		Connection c = null;
@@ -143,13 +144,36 @@ public class ControlDao extends Dao {
 
 		try {
 			c = m_dataSource.getConnection();
+			c.setAutoCommit(false);
 			st = c.prepareStatement(sql);
 			st.setString(1, ctrl.getName());
 			st.setBigDecimal(2, ctrl.getMaxPoint());
 			st.setInt(3, ctrl.getNumber());
 			st.executeUpdate();
+			st.close();
+			
+			
+			st = c.prepareStatement("select id, name, maxpoints, number from controls where id = (select max(id) from controls)");
+			ResultSet rs = st.executeQuery();
 
+			Control ct = null;
+			if (rs.next()) {
+				ct = new Control();
+				ct.setId(rs.getInt("id"));
+				ct.setMaxPoint(rs.getBigDecimal("maxpoints"));
+				ct.setName(rs.getString("name"));
+				ct.setNumber(rs.getInt("number"));
+			}
+			
+			c.commit();
+
+			return ct;
 		} catch (Exception ex) {
+			try {
+				c.rollback();
+			} catch (SQLException e) {
+				m_log.error(e);
+			}
 			m_log.error(ex);
 		} finally {
 			try {
@@ -165,5 +189,6 @@ public class ControlDao extends Dao {
 			}
 		}
 
+		return null;
 	}
 }

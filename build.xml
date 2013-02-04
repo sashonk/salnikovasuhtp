@@ -32,7 +32,7 @@
 
 	       
 	<target name="clean">
-		<delete dir="${builddir}" includeEmptyDirs="true"/>		
+		<delete dir="${builddir}/salnikova" includeEmptyDirs="true"/>		
 		<delete dir="${distdir}"  includeEmptyDirs="true"/>
 	</target>
 

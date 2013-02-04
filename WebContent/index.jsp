@@ -28,9 +28,8 @@
 			%>
 
 			
-			<div><a class="admin_btn" href="admin/home.jsp?page=add_student">добавить студента</a></div>
-			<div><a class="admin_btn" href="admin/home.jsp?page=add_group">добавить группу</a></div>
-			<div><a class="admin_btn" href="admin/home.jsp?page=add_control">добавить КТ</a></div>
+
+			<div><a class="admin_btn" href="admin/home.jsp?page=management">управление</a></div>
 			
 			<div style="margin: 10px;"><a class="admin_btn" href="?logout">выход</a></div>
 

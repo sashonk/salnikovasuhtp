@@ -3,13 +3,14 @@
 
 <%@ page
 	import="java.util.*"
-	import="salnikova.dao.StudentsHelper" 
-	import="salnikova.dao.DocHelper" 
-	import="salnikova.model.Document"
-
+	import="salnikova.dao.DocDao" 
+	import="salnikova.model.*"
+	import="java.net.URLEncoder"
 
 %>
 	
+<%
+
 Integer id = null;
 String idStr = request.getParameter("id");
 if(idStr!=null){
@@ -21,8 +22,14 @@ if(idStr!=null){
 	}
 }
 
-Document doc = DocHelper.getDocument(id);
-response.setContentType("application/force-download");
-response.setContentLength(document.getSize());
-response.getOutputStream().write(content);
 
+DocData doc = DocDao.get().getDocData(id);
+Document d = DocDao.get().getDocument(id);
+
+String filename = URLEncoder.encode(d.getName().replace(" ", "_").toString(),"UTF-8");
+response.setContentType("application/force-download");
+response.setContentLength(doc.getContent().length);
+response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+response.getOutputStream().write(doc.getContent());
+
+%>
