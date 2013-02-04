@@ -1,4 +1,4 @@
-package salnikova.model.util;
+package salnikova.model;
 
 public class Document {
 		
@@ -10,14 +10,14 @@ public class Document {
 		m_id= id;
 	}
 	
-	public void setContent(final byte[] content){
-		m_content = content;
+	public void setSize(final Long size) {
+		m_size = size;
 	}
 	
-	public byte[] getContent(){
-		return m_content;
+	public Long getSize() {
+		return m_size;
 	}
-	
+
 	public void setName(final String name){
 		m_name = name;
 	}
@@ -26,10 +26,18 @@ public class Document {
 		return m_name;
 	}
 	
+	public Integer getControlId() {
+		return m_ownerId;
+	}
 
+	public void setControlId(final Integer id) {
+		m_ownerId = id;
+	}
 	
-	private byte[] m_content;
+
 	private Integer m_id;
 	private String m_name;
+	private Integer m_ownerId;
+	private Long m_size;
 
 }

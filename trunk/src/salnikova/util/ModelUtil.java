@@ -1,7 +1,7 @@
 package salnikova.util;
 
 import salnikova.model.Control;
-import salnikova.model.DocData;
+import salnikova.model.Document;
 import salnikova.model.Student;
 
 public class ModelUtil {
@@ -13,7 +13,7 @@ public class ModelUtil {
 		return String.format("<a href='?page=control&id=%s'>%s</a>", c.getId(), c.getName());
 	}
 	
-	public static String documentRef(final DocData c){
+	public static String documentRef(final Document c) {
 		return String.format("<a href='doc.jsp?id=%s'>%s</a>", c.getId(), c.getName());
 	}
 }

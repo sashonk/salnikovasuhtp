@@ -1,4 +1,4 @@
-package salnikova.util;
+package salnikova.web;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -14,12 +14,11 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
-import salnikova.web.Upload;
 
 
 
 
-public class Util {
+public class WebHelper {
 
     /**
      * processes <b>multipart/form-data</b> encoded data
@@ -38,6 +37,8 @@ public class Util {
 
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload();
+
+
 
         // Parse the request
         FileItemIterator iter = upload.getItemIterator(request);

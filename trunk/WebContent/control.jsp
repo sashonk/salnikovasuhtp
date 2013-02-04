@@ -25,9 +25,9 @@
 %>
 
 
-<% if(request.isUserInRole("admin")) { %>
+<!--<% if(request.isUserInRole("admin")) { %>
 <div><a href="admin/home.jsp?page=add_control">добавить</a></div>
-<% } %>
+<% } %>-->
 
 
 <table>
@@ -40,12 +40,15 @@
 	</tr>
 	
 
-	<% for(Control ctrl : controls){ %>
+	<% for(Control ctrl : controls){ 
+		Document doc = DocDao.get().findDocument(ctrl.getId());
+		%>
+		
 		<tr>
 			<td><%= ctrl.getNumber() %></td>		
 			<td><%= ctrl.getName() %></td>
 			<td><%= ctrl.getMaxPoint() %></td>		
-			<td><a href="#">ссылка</a></td>					
+			<td><% if(doc!=null) {  %><a href="doc.jsp?id=<%= doc.getId() %>"><%=doc.getName() %></a><%  } %></td>					
 			
 			<% if(request.isUserInRole("admin")) { %>
 		

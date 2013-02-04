@@ -51,6 +51,12 @@
 	
 	
 	
+	else if(pg.equals("management")){%>
+	<%@ include file="management.jsp" %>
+	<%}
+	
+	
+	
 	
 	else if(pg.equals("delete")){%>
 	<%@ include file="delete.jsp" %>

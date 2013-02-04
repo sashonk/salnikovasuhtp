@@ -9,25 +9,15 @@ public class DocData {
 	public void setId(final Integer id){
 		m_id= id;
 	}
-	
-	public void setName(final String name){
-		m_name = name;
+
+	public void setContent(final byte[] content) {
+		m_content = content;
 	}
 	
-	public String getName(){
-		return m_name;
+	public byte[] getContent() {
+		return m_content;
 	}
-	
-	public int getSize(){
-		return m_size;
-	}
-	
-	public void setSize(final int size){
-		m_size = size;
-	}
-	
-	
-	private int m_size;
-	private String m_name;
+
 	private Integer m_id;
+	private byte[] m_content;
 }
