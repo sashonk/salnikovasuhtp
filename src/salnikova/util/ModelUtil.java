@@ -6,7 +6,20 @@ import salnikova.model.Student;
 
 public class ModelUtil {
 	public static String shortName(final Student s){
-		return String.format("%s %s.", s.getSecondName(), s.getFirstName().charAt(0));
+		String secName =  s.getSecondName()==null ? "" : s.getSecondName();
+		String firstL = null;
+		if (s.getFirstName() != null) {
+			if (s.getFirstName().length() > 1) {
+				firstL = String.format(" %s.", s.getFirstName().charAt(0));
+			}
+ else {
+				firstL = s.getFirstName();
+			}
+		} else {
+			firstL = "";
+		}
+
+		return secName.concat(firstL);
 	}
 	 
 	public static String controlRef(final Control c){

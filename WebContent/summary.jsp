@@ -36,19 +36,12 @@
 	String surname = request.getParameter("secondname");
 	
 	SummaryDao dao = SummaryDao.get();
-	Map<Student, Map<Integer, Attestation>> data = dao.getAttestationData(groupId);
+	Map<Student, Map<Integer, Attestation>> data = dao.getAttData(groupId);
 	 
 	ControlDao ctrlDao = ControlDao.get();
 	List<Control> controls = ctrlDao.getControlList();
 	
-/*	Collections.sort(controls, new Comparator<Control>() {
 
-		@Override
-		public int compare(Control o1, Control o2) {
-
-			return o1.getNumber().compareTo(o2.getNumber());
-		}
-	});*/
 	
 	
 	GroupsDao gdao = GroupsDao.get();
@@ -90,7 +83,7 @@
 	<% for(Student student : data.keySet()) { %>
 	
 	<tr>
-		<td><a href="?page=student&id=<%=student.getId() %>"><%=student.getSecondName()%></a></td>
+		<td><a href="?page=student&id=<%=student.getId() %>"><%=salnikova.util.ModelUtil.shortName(student)%></a></td>
 				 
 				<% Map<Integer, Attestation> attestations = data.get(student); 
 					for(Control control : controls){

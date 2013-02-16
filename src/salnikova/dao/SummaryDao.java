@@ -20,7 +20,85 @@ public class SummaryDao extends Dao {
 		}
 		return instance;
 	}
+	
+	
 
+	public Map<Student, Map<Integer, Attestation>> getAttData(final Integer groupId){
+		
+		String sql = "select id from students where groupid = ?";
+
+		Connection c = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		StudentsDao sDao = StudentsDao.get();
+		Map<Student, Map<Integer, Attestation>> result = new HashMap<>();
+ 
+		try {
+			c = m_dataSource.getConnection();
+			st = c.prepareStatement(sql);
+			st.setInt(1, groupId);
+			rs = st.executeQuery();
+			
+			while(rs.next()){
+				Integer id = rs.getInt("id");
+				Student s = sDao.findStudent(id);
+				result.put(s, new HashMap<Integer, Attestation>());
+			}
+
+			if (result.size() == 0) {
+				return result;
+			}
+
+			StringBuilder ids = new StringBuilder(); // (1,2,3,4...)
+			for (Student s : result.keySet()) {
+				ids.append(s.getId());
+				ids.append(',');
+			}
+			ids.deleteCharAt(ids.lastIndexOf(","));
+
+
+			st.close();
+			st = c.prepareStatement(String
+					.format("select points, controlid, studentid from attestations where studentid in (%s) ",
+					ids.toString()));
+			rs = st.executeQuery();
+			while (rs.next()) {
+				Integer stId = rs.getInt("studentid");
+				Integer ctrId = rs.getInt("controlid");
+				
+				Attestation a = new Attestation();
+				a.setControlId(ctrId);
+				a.setPoints(rs.getBigDecimal("points"));
+				a.setStudentId(stId);
+				Student stud = null;
+				for(Student s : result.keySet()){
+					if(s.getId().equals(stId)){
+						stud = s;
+						break;
+					}
+				}
+				 result.get(stud).put(ctrId, a);
+			}
+
+		} catch (Exception ex) {
+			m_log.error(ex);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+				if (c != null) {
+					c.close();
+				}
+			} catch (Exception ex) {
+				m_log.error(ex);
+
+			}
+		}
+
+		return result;
+	}
 
 
 	public Map<Student, Map<Integer, Attestation>> getAttestationData(
