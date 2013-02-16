@@ -33,6 +33,10 @@ public class SummaryDao extends Dao {
 
 		StudentsDao sDao = StudentsDao.get();
 		Map<Student, Map<Integer, Attestation>> result = new HashMap<>();
+
+		if (groupId == null) {
+			return result;
+		}
  
 		try {
 			c = m_dataSource.getConnection();
