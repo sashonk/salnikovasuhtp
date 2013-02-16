@@ -20,13 +20,12 @@
 	List<String> msgs = new LinkedList<String>();
 	Map<String, Object> map = WebHelper.processRequest(request, null, 2048*2048, msgs);
 
-	Object number = map.get("number");
-	Object name = map.get("name");
-	Object maxPointsStr = map.get("maxpoint");
-	Object examples = map.get("examples");
+	String number = (String)map.get("number");
+	String name = (String)map.get("name");
+	String maxPointsStr = (String)map.get("maxpoint");
 	
 	if(name!=null && maxPointsStr!= null && number!=null){
-		BigDecimal maxPoints = BigDecimal.valueOf(Integer.parseInt((String)maxPointsStr));
+		BigDecimal maxPoints = BigDecimal.valueOf(Double.parseDouble(maxPointsStr));
 		Upload doc = (Upload)map.get("examples");
 		
 		StudentsDao dao = StudentsDao.get();

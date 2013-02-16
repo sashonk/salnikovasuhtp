@@ -12,7 +12,7 @@
 <%
 	Map<String, String> notifyMap = new HashMap<String, String>();
 	notifyMap.put("group", "при удалении группы будут удалены все студенты этой группы");
-	notifyMap.put("control", "при удалении контроля будут удалены все оценки по этому контролю");
+	notifyMap.put("control", "при удалении контроля будут удалены все аттестации по этому контролю");
 
 
 

@@ -30,7 +30,7 @@
 	Group g = GroupsDao.get().getGroup(student.getGroupId());
 %>
 
-<div style="font-size: 20px; margin: 5px;"><%= ModelUtil.shortName(student) %>, группа <%=g.getName()  %> <!--(<a href="admin/home.jsp?page=delete&type=student&id=<%= student.getId() %>">удалить студента</a>)--></div>
+<div style="font-size: 20px; margin: 5px;"><%= student.getSecondName() %> <%= student.getFirstName() %>, группа <%=g.getName()  %> <!--(<a href="admin/home.jsp?page=delete&type=student&id=<%= student.getId() %>">удалить студента</a>)--></div>
 	
 <table>
 	<tr> 

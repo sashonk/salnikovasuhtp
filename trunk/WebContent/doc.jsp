@@ -6,6 +6,7 @@
 	import="salnikova.dao.DocDao" 
 	import="salnikova.model.*"
 	import="java.net.URLEncoder"
+	import="java.io.OutputStream"
 
 %>
 	
@@ -22,6 +23,7 @@ if(idStr!=null){
 	}
 }
 
+OutputStream os = response.getOutputStream();
 
 DocData doc = DocDao.get().getDocData(id);
 Document d = DocDao.get().getDocument(id);
@@ -30,6 +32,6 @@ String filename = URLEncoder.encode(d.getName().replace(" ", "_").toString(),"UT
 response.setContentType("application/force-download");
 response.setContentLength(doc.getContent().length);
 response.setHeader("Content-Disposition", "attachment; filename=" + filename);
-response.getOutputStream().write(doc.getContent());
+os.write(doc.getContent());
 
 %>
