@@ -11,12 +11,15 @@
 <body>
 
 		<div class="header">
+
+		<div style='text-align:center;'><img width='150px;' height='100px' src="univer.jpg"></div>
 		<div style="text-align:center; font-size: 36px; font-family: times new roman;">Система "СТУДЕНТ"</div>
+		<div style='text-align:center; margin-bottom: 5px;'><i>Не бойся, что не знаешь. Бойся, что не учишься</i></div>
 		
 		<div><a class="navi_link" href="?">на главную</a></div>
 		<div><a class="navi_link" href="?page=control">контроль</a></div>
 		<div><a class="navi_link" href="?page=contacts">контакты</a></div>
-		<div><a class="navi_link" href="?page=schedule">расписание</a></div>		
+		<div><a class="navi_link" href="schedule.pdf">расписание</a></div>		
 		
 		<% if(request.isUserInRole("admin")) { 
 			
@@ -99,7 +102,7 @@
 		<%}%>
 		
 </div>
-	
+
 		<div class="boot"><a href="?page=contacts">КОНТАКТЫ </a>&copy sashonk 2012</div>
 </body>
 </html>

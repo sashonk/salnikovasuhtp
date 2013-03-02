@@ -80,7 +80,10 @@
 		<% } %>
 		<td>сумма</td>
 	</tr>
-	<% for(Student student : data.keySet()) { %>
+	<% 
+		
+	Set<Student> set = new TreeSet<Student>(data.keySet());
+	for(Student student :set) { %>
 	
 	<tr>
 		<td><a href="?page=student&id=<%=student.getId() %>"><%=salnikova.util.ModelUtil.shortName(student)%></a></td>
