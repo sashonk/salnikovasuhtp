@@ -4,7 +4,7 @@ package salnikova.model;
 
 
 
-public class Student {
+public class Student implements Comparable<Student> {
 
 	public String getFirstName(){
 		return m_firstName;
@@ -64,5 +64,16 @@ public class Student {
 		} else if (!m_id.equals(other.m_id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Student o) {
+		if (this.equals(o)) {
+			return 0;
+		}
+ else {
+			return this.getSecondName().compareTo(o.getSecondName());
+		}
+
 	}
 }

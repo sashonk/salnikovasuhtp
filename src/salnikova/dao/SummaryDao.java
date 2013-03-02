@@ -101,6 +101,7 @@ public class SummaryDao extends Dao {
 			}
 		}
 
+
 		return result;
 	}
 
