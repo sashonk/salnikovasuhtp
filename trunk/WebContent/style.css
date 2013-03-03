@@ -1,12 +1,18 @@
 @CHARSET "UTF-8";
 
 
-
 body{
+	width:100%;
+	height: 100%;
+	margin: 0;
+}
+
+div.html{
 
 	width: 50%;
-	background : #eeeeee;
 	margin:  auto;
+	padding-top: 50px;
+
 }
 
 table
@@ -20,6 +26,7 @@ td{
 	border: thin solid black;
 	padding: 5px;
 	text-align: center;
+	background: white;
 }
 
 div.content{
@@ -29,7 +36,7 @@ div.content{
 
 div.header{
 	//border: thin solid;
-	margin-top:50px;
+	//margin-top:50px;
 //	background: #aaddFF;
 
 
@@ -44,6 +51,6 @@ div.boot{
 }
 
 
-a.admin_btn{
-
+a.navi_link{
+	font-size: 20px;
 }
