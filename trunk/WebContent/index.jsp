@@ -13,15 +13,26 @@
 		
 		<div class='html'>
 		<div class="header">
-
+		<% 
+			String name = null;
+			if(request.getUserPrincipal()!=null){
+				name = request.getUserPrincipal().getName();
+			}
+		%>
+		
+		<div style='float:right; <%= name==null? "visibility: hidden;" : "" %>'><span>Здравствуйте, <b><%=name %></b></span><br><span><a  href="?logout">выход</a></span></div>
+		<div style='clear:both; <%= name==null? "visibility: hidden;" : "" %>'></div>
+		
 
 		<div style="text-align:center; font-size: 36px; font-family: times new roman;">Система "СТУДЕНТ"</div>
-		<div style='text-align:center; margin-bottom: 5px;'><i>Не бойся, что не знаешь. Бойся, что не учишься</i></div>
+		<div style='text-align:center; margin-bottom: 5px;'><i>Не бойся не знать. Бойся не учиться</i></div>
 		
-		<div><a class="navi_link" href="?">на главную</a></div>
-		<div><a class="navi_link" href="?page=control">контроль</a></div>
-		<div><a class="navi_link" href="?page=contacts">контакты</a></div>
-		<div><a class="navi_link" href="schedule.pdf">расписание</a></div>		
+		<div class='navi'><a class="navi_link" href="?">на главную</a>
+		<a class="navi_link" href="?page=control">контроль</a>
+		<a class="navi_link" href="?page=contacts">контакты</a>
+		<a class="navi_link" href="schedule.pdf">расписание</a>
+		<a class="navi_link" href="admin/home.jsp?page=management">управление</a>
+
 		
 		<% if(request.isUserInRole("admin")) { 
 			
@@ -34,11 +45,12 @@
 
 			
 
-			<div><a class="navi_link" href="admin/home.jsp?page=management">управление</a></div>
 			
-			<div style="margin: 10px;"><a class="navi_link" href="?logout">выход</a></div>
+			
+
 
 		<% } %>
+		</div>
 		
 		</div>
 		<div class="content" align="center">
@@ -105,7 +117,7 @@
 		
 </div>
 
-		<div class="boot"><a href="?page=contacts">КОНТАКТЫ </a>&copy sashonk 2012</div>
+		<div class="boot"><a href="?page=contacts">КОНТАКТЫ </a>&copy sashonk 2013</div>
 		</div>
 </body>
 </html>
