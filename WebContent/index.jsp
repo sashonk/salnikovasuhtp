@@ -9,10 +9,12 @@
 
 </head>
 <body>
-
+		<img style='position: absolute; z-index: -1; width:100%; height: 100%;' src='univer.jpg'>
+		
+		<div class='html'>
 		<div class="header">
 
-		<div style='text-align:center;'><img width='150px;' height='100px' src="univer.jpg"></div>
+
 		<div style="text-align:center; font-size: 36px; font-family: times new roman;">Система "СТУДЕНТ"</div>
 		<div style='text-align:center; margin-bottom: 5px;'><i>Не бойся, что не знаешь. Бойся, что не учишься</i></div>
 		
@@ -32,9 +34,9 @@
 
 			
 
-			<div><a class="admin_btn" href="admin/home.jsp?page=management">управление</a></div>
+			<div><a class="navi_link" href="admin/home.jsp?page=management">управление</a></div>
 			
-			<div style="margin: 10px;"><a class="admin_btn" href="?logout">выход</a></div>
+			<div style="margin: 10px;"><a class="navi_link" href="?logout">выход</a></div>
 
 		<% } %>
 		
@@ -104,5 +106,6 @@
 </div>
 
 		<div class="boot"><a href="?page=contacts">КОНТАКТЫ </a>&copy sashonk 2012</div>
+		</div>
 </body>
 </html>
