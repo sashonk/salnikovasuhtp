@@ -27,11 +27,11 @@
 		<div style="text-align:center; font-size: 36px; font-family: times new roman;">Система "СТУДЕНТ"</div>
 		<div style='text-align:center; margin-bottom: 5px;'><i>Не бойся не знать. Бойся не учиться</i></div>
 		
-		<div class='navi'><a class="navi_link" href="?">на главную</a>
-		<a class="navi_link" href="?page=control">контроль</a>
-		<a class="navi_link" href="?page=contacts">контакты</a>
-		<a class="navi_link" href="schedule.pdf">расписание</a>
-		<a class="navi_link" href="admin/home.jsp?page=management">управление</a>
+		<div class='navi'><a class="navi_link" href="?"><img src='main.png'></a>
+		<a class="navi_link" href="?page=control"><img src='control.png'></a>
+		<a class="navi_link" href="?page=contacts"><img src='contacts.png'></a>
+		<a class="navi_link" href="schedule.pdf"><img src='schedule.png'></a>
+		<a class="navi_link" href="admin/home.jsp?page=management"><img src='management.png'></a>
 
 		
 		<% if(request.isUserInRole("admin")) { 
