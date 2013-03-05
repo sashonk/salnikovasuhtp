@@ -8,6 +8,18 @@
 <LINK href="style.css" rel="stylesheet" type="text/css">
 
 </head>
+
+
+<%@ page
+import="salnikova.web.Pages"
+
+
+%>
+
+<%
+    String pg = request.getParameter("page");
+%>
+
 <body>
 		<img style='position: absolute; z-index: -1; width:100%; height: 100%;' src='univer.jpg'>
 		
@@ -27,10 +39,10 @@
 		<div style="text-align:center; font-size: 36px; font-family: times new roman;">Система "СТУДЕНТ"</div>
 		<div style='text-align:center; margin-bottom: 5px;'><i>Не бойся не знать. Бойся не учиться</i></div>
 		
-		<div class='navi'><a class="navi_link" href="?"><img src='main.png'></a>
-		<a class="navi_link" href="?page=control"><img src='control.png'></a>
-		<a class="navi_link" href="?page=contacts"><img src='contacts.png'></a>
-		<a class="navi_link" href="schedule.pdf"><img src='schedule.png'></a>
+		<div class='navi'><a class="navi_link" href="?"><img <%= (pg==null || "".equals(pg)) ? "style='display:none;'" : "" %>  src='main.png'><img <%= (pg==null || "".equals(pg)) ? "" : "style='display:none;'" %> src='main-hover.png'></a>
+		<a class="navi_link" href="?page=control"><img <%= Pages.CONTROL.equals(pg) ? "style='display:none;'" : "" %> src='control.png'><img <%= Pages.CONTROL.equals(pg) ? "" : "style='display:none;'" %> src='control-hover.png' ></a>
+		<a class="navi_link" href="?page=contacts"><img <%= Pages.CONTACTS.equals(pg) ? "style='display:none;'" : "" %> src='contacts.png'><img <%= Pages.CONTACTS.equals(pg) ? "" : "style='display:none;'" %> src='contacts-hover.png' ></a>
+		<a class="navi_link" href="schedule.pdf"><img src='schedule.png' ></a>
 		<a class="navi_link" href="admin/home.jsp?page=management"><img src='management.png'></a>
 
 		
@@ -57,7 +69,7 @@
 		
 		
 		<%
-			String pg = request.getParameter("page");
+			
 				if(pg==null){
 					pg = "summary";
 		
