@@ -7,9 +7,16 @@ body{
 	margin: 0;
 }
 
+.bg-image {
+    background-image: url("univer-light.jpg");
+    background-size: cover;
+    background-position: center center;
+    
+}
+
 div.html{
 
-	width: 50%;
+	//width: 50%;
 	margin:  auto;
 	padding-top: 50px;
 

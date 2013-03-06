@@ -20,8 +20,8 @@ import="salnikova.web.Pages"
     String pg = request.getParameter("page");
 %>
 
-<body>
-		<img style='position: absolute; z-index: -1; width:100%; height: 100%;' src='univer.jpg'>
+<body> 
+		<img class="bg-image" style='position: absolute; z-index: -1; width:100%; height: 100%;' src='blank.gif'>
 		
 		<div class='html'>
 		<div class="header">
@@ -40,9 +40,10 @@ import="salnikova.web.Pages"
 		<div style='text-align:center; margin-bottom: 5px;'><i>Не бойся не знать. Бойся не учиться</i></div>
 		
 		<div class='navi'><a class="navi_link" href="?"><img <%= (pg==null || "".equals(pg)) ? "style='display:none;'" : "" %>  src='main.png'><img <%= (pg==null || "".equals(pg)) ? "" : "style='display:none;'" %> src='main-hover.png'></a>
-		<a class="navi_link" href="?page=control"><img <%= Pages.CONTROL.equals(pg) ? "style='display:none;'" : "" %> src='control.png'><img <%= Pages.CONTROL.equals(pg) ? "" : "style='display:none;'" %> src='control-hover.png' ></a>
-		<a class="navi_link" href="?page=contacts"><img <%= Pages.CONTACTS.equals(pg) ? "style='display:none;'" : "" %> src='contacts.png'><img <%= Pages.CONTACTS.equals(pg) ? "" : "style='display:none;'" %> src='contacts-hover.png' ></a>
+		<a class="navi_link" href="?page=<%=Pages.CONTROL%>"><img <%= Pages.CONTROL.equals(pg) ? "style='display:none;'" : "" %> src='control.png'><img <%= Pages.CONTROL.equals(pg) ? "" : "style='display:none;'" %> src='control-hover.png' ></a>
+		<a class="navi_link" href="?page=<%=Pages.CONTACTS %>"><img <%= Pages.CONTACTS.equals(pg) ? "style='display:none;'" : "" %> src='contacts.png'><img <%= Pages.CONTACTS.equals(pg) ? "" : "style='display:none;'" %> src='contacts-hover.png' ></a>
 		<a class="navi_link" href="schedule.pdf"><img src='schedule.png' ></a>
+		<a class="navi_link" href="?page=<%=Pages.BIBLIOGRAPHY %>" ><img <%= Pages.BIBLIOGRAPHY.equals(pg) ? "style='display:none;'" : "" %> src='bibliography.png'  ><img <%= Pages.BIBLIOGRAPHY.equals(pg) ? "" : "style='display:none;'" %> src='bibliography-hover.png'  ></a>
 		<a class="navi_link" href="admin/home.jsp?page=management"><img src='management.png'></a>
 
 		
@@ -71,24 +72,24 @@ import="salnikova.web.Pages"
 		<%
 			
 				if(pg==null){
-					pg = "summary";
+					pg = Pages.SUMMARY;
 		
 		}
 				
 				
-				if(pg.equals("student")){%>
+		if(Pages.STUDENTS.equals(pg)){%>
 				
 		<%@ include file="student.jsp" %>						
 		
 		
-		<%}else if(pg.equals("control")){%>				
+		<%}else if(Pages.CONTROL.equals(pg)){%>				
 							
 		<%@ include file="control.jsp" %>	
 		
 			
 		 
 		
-		<%}else if(pg.equals("summary")){%>
+		<%}else if(Pages.SUMMARY.equals(pg)){%>
 				
 		<%@ include file="summary.jsp" %>	
 		
@@ -97,7 +98,7 @@ import="salnikova.web.Pages"
 
 		
 		
-		<%}else if(pg.equals("contacts")){%>
+		<%}else if(Pages.CONTACTS.equals(pg)){%>
 		
 		<%@ include file="contacts.jsp"%>	
 		
@@ -105,7 +106,7 @@ import="salnikova.web.Pages"
 		
 		
 		
-		<%}else if(pg.equals("login")){%>
+		<%}else if(Pages.LOGIN.equals(pg)){%>
 		
 		<% response.sendRedirect("login.jsp"); %>	
 		
@@ -113,14 +114,20 @@ import="salnikova.web.Pages"
 		
 		
 		
-		<%}else if(pg.equals("schedule")){%>
+		<%}else if(Pages.SCHEDULE.equals(pg)){%>
 		
 		<%@ include file="schedule.jsp" %>	
+
+
+
+		<%} else if(Pages.BIBLIOGRAPHY.equals(pg)){ %>
+		<%@ include file="bibliography.jsp" %>
+
 		
 		
 		
 		
-		<%}else if(pg.equals("login_error")){%>
+		<%}else if(Pages.LOGIN_ERROR.equals(pg)){%>
 		
 		<% response.sendRedirect("login.jsp?error"); %>	
 		
