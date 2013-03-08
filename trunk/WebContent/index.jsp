@@ -44,7 +44,7 @@ import="salnikova.web.Pages"
 		<a class="navi_link" href="?page=<%=Pages.CONTACTS %>"><img <%= Pages.CONTACTS.equals(pg) ? "style='display:none;'" : "" %> src='contacts.png'><img <%= Pages.CONTACTS.equals(pg) ? "" : "style='display:none;'" %> src='contacts-hover.png' ></a>
 		<a class="navi_link" href="schedule.pdf"><img src='schedule.png' ></a>
 		<a class="navi_link" href="?page=<%=Pages.BIBLIOGRAPHY %>" ><img <%= Pages.BIBLIOGRAPHY.equals(pg) ? "style='display:none;'" : "" %> src='bibliography.png'  ><img <%= Pages.BIBLIOGRAPHY.equals(pg) ? "" : "style='display:none;'" %> src='bibliography-hover.png'  ></a>
-		<a class="navi_link" href="admin/home.jsp?page=management"><img src='management.png'></a>
+		<a class="navi_link" href="admin/home.jsp?page=<%= Pages.MANAGEMENT %>"><img src='management.png'></a>
 
 		
 		<% if(request.isUserInRole("admin")) { 

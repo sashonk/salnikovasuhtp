@@ -52,7 +52,7 @@ import="salnikova.util.ModelUtil"
 		
 		%> 
 			<div>аттестация студента <b><%= student.getSecondName() %></b> по контролю <b><%= ctrl.getName() %></b> произведена</div>
-			<div><a href="../?page=student&id=<%=id%>">назад к <%= ModelUtil.shortName(student) %></a></div>
+			<div><a href="../?page=<%= Pages.STUDENTS %>&id=<%=id%>">назад к <%= ModelUtil.shortName(student) %></a></div>
 		<%
 	}
 	else{
