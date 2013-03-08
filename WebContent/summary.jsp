@@ -86,7 +86,7 @@
 	for(Student student :set) { %>
 	
 	<tr>
-		<td><a href="?page=student&id=<%=student.getId() %>"><%=salnikova.util.ModelUtil.shortName(student)%></a></td>
+		<td><a href="?page=<%= Pages.STUDENTS %>&id=<%=student.getId() %>"><%=salnikova.util.ModelUtil.shortName(student)%></a></td>
 				 
 				<% Map<Integer, Attestation> attestations = data.get(student); 
 					for(Control control : controls){
