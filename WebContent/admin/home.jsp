@@ -12,6 +12,8 @@
 
 
 <div><a href="?">на главную</a></div>
+<div><a href="?page=management"></a>управление</div>
+<div style='margin-top:5px;'></div>
 
 
 <%
