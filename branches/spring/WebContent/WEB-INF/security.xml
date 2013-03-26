@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:sec="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                    http://www.springframework.org/schema/security 
+                    http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <sec:http use-expressions="true">
+         <sec:intercept-url pattern="/resources/*" access="permitAll" />      
+  	 	<sec:intercept-url pattern="/login.html" access="permitAll" />
+         
+  		<sec:intercept-url pattern="/*.html" access="permitAll" />  	 	
+       
+       <sec:intercept-url pattern="/admin/*" access="hasRole('admin')" />         
+        <sec:intercept-url pattern="/**" access="denyAll" />
+        <sec:form-login />
+        <sec:logout logout-success-url="/index.html" />
+        <sec:remember-me key="rememberMe" token-validity-seconds="30"/>
+    </sec:http>
+
+    <sec:authentication-manager>
+	   <sec:authentication-provider>
+	    <sec:password-encoder hash="sha"></sec:password-encoder>
+		<sec:jdbc-user-service data-source-ref="ds" 
+ 
+		   users-by-username-query="select name, password, 1 as enabled from users where name=?" 
+ 
+		   authorities-by-username-query="select u.name, ur.role_name from users u, user_roles ur  where u.name = ur.name and u.name =?" 
+ 
+		/>
+	   </sec:authentication-provider>
+    </sec:authentication-manager>
+    
+    <sec:global-method-security secured-annotations="enabled" access-decision-manager-ref="accessDecisionManager"></sec:global-method-security>
+    
+	    <bean id="accessDecisionManager"
+	   	class="org.springframework.security.access.vote.AffirmativeBased">
+	  	<property name="decisionVoters">
+		    <list>
+		      <ref bean="roleVoter" />
+		      <ref bean="authenticatedVoter" />
+		    </list>
+	 	 </property>
+		</bean>
+    
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter">
+    	<property name="rolePrefix" value="" />
+	</bean>
+	
+
+	<bean id="authenticatedVoter"
+  	 class="org.springframework.security.access.vote.AuthenticatedVoter" />
+
+</beans>
