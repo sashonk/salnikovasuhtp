@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS SALNIKOVA CHARACTER SET UTF8;
-USE salnikova;
+CREATE DATABASE IF NOT EXISTS salnikova2 CHARACTER SET UTF8;
+USE salnikova2;
 
 CREATE TABLE IF NOT EXISTS users(
 	name VARCHAR(15) PRIMARY KEY,
@@ -12,6 +12,20 @@ CREATE TABLE IF NOT EXISTS user_roles(
 	role_name VARCHAR(15) NOT NULL,
 	PRIMARY KEY (name, role_name)
 );
+
+CREATE TABLE IF NOT EXISTS tutors(
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        firstName VARCHAR(255),
+        middleName VARCHAR(255),
+        lastName VARCHAR(255),
+        degree VARCHAR(255),
+        post VARCHAR(255),
+        email VARCHAR(50),
+        login VARCHAR(15),
+        FOREIGN KEY(login) REFERENCES users(name) ON DELETE SET NULL
+);
+
+
 
 CREATE TABLE IF NOT EXISTS controls (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -78,24 +92,8 @@ CREATE TABLE IF NOT EXISTS docdata(
 
 
 
-CREATE TABLE IF NOT EXISTS tutors(
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	firstName VARCHAR(255),
-	middleName VARCHAR(255),
-	lastName VARCHAR(255),
-	degree VARCHAR(255),
-	post VARCHAR(255),
-	email VARCHAR(50),
-	login VARCHAR(15),
-	FOREIGN KEY(login) REFERENCES users(name) ON DELETE SET NULL
-);
 
 
-INSERT INTO DEPARTMENTS (name, fullname) values ('ТОХФ', 'Факультет технологии органических веществ и химико-фармацевтических средств');
-INSERT INTO DEPARTMENTS (name, fullname) values ('ИХТ', 'Инженерный химико-технологический факультет');
-INSERT INTO DEPARTMENTS (name, fullname) values ('ФизХим', 'Факультет физической химии');
-INSERT INTO DEPARTMENTS (name, fullname) values ('НПМ', 'Факультет нефтегазохимии и полимерных материалов');
- 
 
 
 
