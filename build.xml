@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="Salnikova" default="build" basedir=".">         	
-	<property name="war_name" value="ROOT.war" />
+	<property name="war_name" value="suhtp.war" />
 	<property name="builddir" value="WebContent/WEB-INF/classes"/>
 	<property  name="distdir" value="dist" />
 	<property name="libs" value="WebContent/WEB-INF/lib" />
-	<property name="ext_libs" value="/tomcat/lib" />
-	<property name="webapps" value="/var/lib/tomcat6/suhtpapps" />
+	<property name="ext_libs" value="/usr/share/tomcat6/lib" />
+	<property name="webapps" value="/var/lib/tomcat6/webapps" />
 	
 
 	<target name="build">

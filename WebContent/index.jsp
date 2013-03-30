@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %> 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -80,7 +82,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 		<div class="content" align="center">
 		
 		
-		<% if(new File(request.getServletContext().getRealPath("/"+pg+".jsp")).exists()){  %>
+		<% if(true){  %>
 			
 			<jsp:include page="${page}.jsp" />
 		
