@@ -40,7 +40,7 @@ if(request.getUserPrincipal()!=null){
 	Group g = ctx.getBean(GroupsDao.class).getGroup(student.getGroupId());
 %>
 
-<div style="font-size: 20px; margin: 5px;"><%= student.getSecondName() %> <%= student.getFirstName() %>, группа <a href='summary.html?group=<%=g.getId() %>'><%=g.getName()  %></a> </div>
+<div style="font-size: 20px; margin: 5px;"><%= student.getLastName() %> <%= student.getFirstName() %>, группа <a href='summary.html?group=<%=g.getId() %>'><%=g.getName()  %></a> </div>
 	
 <table>
 	<tr> 

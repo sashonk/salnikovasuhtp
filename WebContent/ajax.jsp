@@ -39,7 +39,7 @@ if("get_groups".equals(cmd)){
 
 else if("get_summary".equals(cmd)){
 	Integer group = Integer.parseInt(request.getParameter("group"));
-	Map<Student, Map<Integer, Attestation>> data = ctx.getBean(SummaryDao.class).getAttestations(group);
+	Map<Student, Map<Integer, Attestation>> data = ctx.getBean(SummaryDao.class).getAtts(group);
 	List<Control> controlList = ctx.getBean(ControlDao.class).getControlList();
 	
 	Set<Student> set = new TreeSet<Student>(data.keySet());

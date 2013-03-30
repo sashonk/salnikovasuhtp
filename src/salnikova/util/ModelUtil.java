@@ -11,22 +11,7 @@ public class ModelUtil {
 		// no-op
 	}
 
-	public static String shortName(final Student s){
-		String secName =  s.getSecondName()==null ? "" : s.getSecondName();
-		String firstL = null;
-		if (s.getFirstName() != null) {
-			if (s.getFirstName().length() > 1) {
-				firstL = String.format(" %s.", s.getFirstName().charAt(0));
-			}
- else {
-				firstL = s.getFirstName();
-			}
-		} else {
-			firstL = "";
-		}
 
-		return secName.concat(firstL);
-	}
 
 	public boolean equals(final Identity i1, final Identity i2) {
 		if (i1 == null || i2 == null) {
@@ -52,7 +37,7 @@ public class ModelUtil {
 		sb.append(firstName);
 
 		String middleName = model.getMiddleName();
-		if (middleName != null) {
+		if (!Utils.isBlank(middleName)) {
 			if (middleName.length() > 1) {
 				middleName = middleName.substring(0, 1).concat(".");
 			}
@@ -68,7 +53,7 @@ public class ModelUtil {
 		sb.append(model.getLastName());
 		sb.append(' ');
 		sb.append(model.getFirstName());
-		if (model.getMiddleName() != null) {
+		if (!Utils.isBlank(model.getMiddleName())) {
 			sb.append(' ');
 			sb.append(model.getMiddleName());
 		}

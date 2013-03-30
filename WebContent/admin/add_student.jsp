@@ -46,7 +46,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 		Student s = dao.createStudent(firstName, secondName, group);
 		
 		%> 
-			<div>студент <b><%= s.getSecondName() %></b> добавлен</div>
+			<div>студент <b><%= s.getLastName() %></b> добавлен</div>
 		<%
 		
 		
