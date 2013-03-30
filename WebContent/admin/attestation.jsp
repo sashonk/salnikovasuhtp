@@ -57,7 +57,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 		sDao.createAttestation(id, control, points); 
 		
 		%> 
-			<div>аттестация студента <b><%= student.getSecondName() %></b> по контролю <b><%= ctrl.getName() %></b> произведена</div>
+			<div>аттестация студента <b><%= student.getLastName() %></b> по контролю <b><%= ctrl.getName() %></b> произведена</div>
 			<div><a href="../<%= Pages.STUDENT %>.html?id=<%=id%>">назад к <%= ModelUtil.shortName(student) %></a></div>
 		<%
 	}
