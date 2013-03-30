@@ -48,7 +48,7 @@ public class ModelUtil {
 		return sb.toString();
 	}
 
-	public String fullName(final HasName model) {
+	public static String fullName(final HasName model) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(model.getLastName());
 		sb.append(' ');
