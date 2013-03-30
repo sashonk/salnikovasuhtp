@@ -2,8 +2,17 @@ package salnikova.model;
 
 import java.math.BigDecimal;
 
-public class Attestation {
+public class Attestation implements Identity {
 
+	@Override
+	public void setId(Integer id) {
+		m_id = id;
+	}
+
+	@Override
+	public Integer getId() {
+		return m_id;
+	}
 			
 	public Integer getControlId(){
 		return m_controlId;
@@ -32,4 +41,5 @@ public class Attestation {
 	private Integer m_controlId;
 	private BigDecimal m_points;
 	private Integer m_studentId;
+	private Integer m_id;
 }

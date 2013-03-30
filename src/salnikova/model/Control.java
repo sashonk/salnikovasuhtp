@@ -3,7 +3,8 @@ package salnikova.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Control {
+
+public class Control implements Identity {
 
 	
 	public String getName(){
@@ -38,10 +39,12 @@ public class Control {
 		return m_maxPoint;
 	}
 	
+	@Override
 	public Integer getId(){
 		return m_id;
 	}
 	
+	@Override
 	public void setId(final Integer id){
 		m_id = id;
 	}
@@ -54,12 +57,23 @@ public class Control {
 		return m_number;
 	}
 
+	public void setOwnerId(final Integer id) {
+		m_ownerId = id;
+	}
+
+	public Integer getOwnerId() {
+		return m_ownerId;
+	}
+
+
+
 	private BigDecimal m_maxPoint;
 	private Date m_dueDate;
 	private String m_description;
 	private String m_name;
 	private Integer m_id ;
 	private Integer m_number;
+	private Integer m_ownerId;
 
 	@Override
 	public int hashCode() {

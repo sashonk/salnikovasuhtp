@@ -8,6 +8,6 @@ public class Pages{
     public static final String BIBLIOGRAPHY = "bibliography";
     public static final String LOGIN = "login";
     public static final String LOGIN_ERROR = "login_error";
-    public static final String STUDENTS = "students";
+	public static final String STUDENT = "student";
     public static final String SUMMARY = "summary";
 }

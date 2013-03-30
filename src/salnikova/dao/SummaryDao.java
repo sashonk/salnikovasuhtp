@@ -1,188 +1,95 @@
 package salnikova.dao;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import salnikova.model.Attestation;
+import salnikova.model.Control;
+import salnikova.model.Group;
 import salnikova.model.Student;
+import salnikova.orm.SearchCriterion;
+import salnikova.orm.SearchQuery;
+import salnikova.orm.SortOrder;
+import salnikova.orm.Storage;
 
-public class SummaryDao extends Dao {
+public class SummaryDao {
 
-	private static SummaryDao instance;
-
-	public static SummaryDao get() {
-		if (instance == null) {
-			instance = new SummaryDao();
-		}
-		return instance;
-	}
 	
-	
+	private final static Log m_log = LogFactory.getLog(SummaryDao.class);
 
-	public Map<Student, Map<Integer, Attestation>> getAttData(final Integer groupId){
-		
-		String sql = "select id from students where groupid = ?";
-
-		Connection c = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		StudentsDao sDao = StudentsDao.get();
-		Map<Student, Map<Integer, Attestation>> result = new HashMap<>();
-
+	public List<Control> getControls(final Integer groupId) {
 		if (groupId == null) {
-			return result;
+			return new LinkedList<>();
 		}
- 
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement(sql);
-			st.setInt(1, groupId);
-			rs = st.executeQuery();
-			
-			while(rs.next()){
-				Integer id = rs.getInt("id");
-				Student s = sDao.findStudent(id);
-				result.put(s, new HashMap<Integer, Attestation>());
-			}
 
-			if (result.size() == 0) {
-				return result;
-			}
+		final Group group = m_storage.load(Group.class, groupId);
+		SearchQuery query = new SearchQuery();
+		if (group.getTutorId() != null) {
+			query.getCriterions().add(
+					SearchCriterion.eq("ownerId", group.getTutorId()));
+		}
+		query.getOrders().add(SortOrder.asc("number"));
 
-			StringBuilder ids = new StringBuilder(); // (1,2,3,4...)
-			for (Student s : result.keySet()) {
-				ids.append(s.getId());
-				ids.append(',');
-			}
-			ids.deleteCharAt(ids.lastIndexOf(","));
+		return m_storage.search(Control.class, query);
+	}
 
+	public Map<Student, Map<Integer, Attestation>> getAtts(final Integer groupId) {
 
-			st.close();
-			st = c.prepareStatement(String
-					.format("select points, controlid, studentid from attestations where studentid in (%s) ",
-					ids.toString()));
-			rs = st.executeQuery();
-			while (rs.next()) {
-				Integer stId = rs.getInt("studentid");
-				Integer ctrId = rs.getInt("controlid");
-				
-				Attestation a = new Attestation();
-				a.setControlId(ctrId);
-				a.setPoints(rs.getBigDecimal("points"));
-				a.setStudentId(stId);
-				Student stud = null;
-				for(Student s : result.keySet()){
-					if(s.getId().equals(stId)){
-						stud = s;
-						break;
+		Map<Student, Map<Integer, Attestation>> map = new HashMap<>();
+		if(groupId==null){
+			return map;
+		}
+
+		final Group group = m_storage.load(Group.class, groupId);
+		SearchQuery q = new SearchQuery();
+		q.getCriterions().add(SearchCriterion.eq("groupId", groupId));
+
+		List<Student> result = m_storage.search(Student.class, q);
+		
+		SearchQuery query = new SearchQuery();
+		if (group.getTutorId() != null) {
+			query.getCriterions().add(
+					SearchCriterion.eq("ownerId", group.getTutorId()));
+		}
+		query.getOrders().add(SortOrder.asc("number"));
+		List<Control> controls = getControls(groupId);
+
+		for (Student student : result) {
+			SearchQuery qq = new SearchQuery();
+			qq.getCriterions().add(
+					SearchCriterion.eq("studentId", student.getId()));
+
+			List<Attestation> atts = m_storage.search(Attestation.class, qq);
+			Map<Integer, Attestation> mm = new HashMap<>();
+
+			for (Control c : controls) {
+				Attestation att = null;
+				inner: for (Attestation a : atts) {
+					if (a.getControlId().equals(c.getId())) {
+						att = a;
+						break inner;
 					}
 				}
-				 result.get(stud).put(ctrId, a);
+
+				mm.put(c.getId(), att);
 			}
 
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
+			map.put(student, mm);
 		}
+		return map;
+	};
 
 
-		return result;
+
+
+	public void setStorage(final Storage st) {
+		m_storage = st;
 	}
 
-
-	public Map<Student, Map<Integer, Attestation>> getAttestationData(
-final Integer groupId) {
-		
-		String sql = "select s.id sid, s.firstName firstName, s.secondName secondName, s.groupId groupId, c.id cid, c.name cname, "
-				+ "(select a.points from attestations a where a.studentid = s.id and a.controlid = c.id) points"
-				+ " from students s, controls c where s.groupid = ?";
-
-		Connection c = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		Map<Student, Map<Integer, Attestation>> result = new HashMap<>();
-
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement(sql);
-			st.setInt(1, groupId);
-
-			rs = st.executeQuery();
-			while (rs.next()) {
-
-				Student s = new Student();
-				s.setFirstName(rs.getString("firstName"));
-				s.setSecondName(rs.getString("secondName"));
-				s.setId(rs.getInt("sid"));
-				s.setGroupId(rs.getInt("groupId"));
-
-				Map<Integer, Attestation> attestations = result.get(s);
-				if (attestations == null) {
-					attestations = new HashMap<>();
-					result.put(s, attestations);
-				}
-				
-				Attestation a = null;
-				if (rs.getBigDecimal("points") != null) {
-					a = new Attestation();
-					a.setControlId(rs.getInt("cid"));
-					a.setPoints(rs.getBigDecimal("points"));
-					a.setStudentId(s.getId());
-				}
-
-				attestations.put(rs.getInt("cid"), a);
-
-			}
-
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
-		}
-
-		return result;
-	}
-	
-	
-
-
-	
-	public void createAttestation(final Integer studentId,
-			final Integer controlId) {
-		//TODO
-		throw new IllegalStateException("not implemented");			
-	}
-
-	
-	public BigDecimal getPointsRaffled() {
-		//TODO
-		throw new IllegalStateException("not implemented");			
-	}
+	private Storage m_storage;
 }

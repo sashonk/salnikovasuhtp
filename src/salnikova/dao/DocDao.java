@@ -7,20 +7,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import salnikova.model.DocData;
 import salnikova.model.Document;
+import salnikova.orm.Storage;
 
-public class DocDao extends Dao {
-	private static DocDao instance;
+public class DocDao {
 
-	public static DocDao get() {
-		if (instance == null) {
-			instance = new DocDao();
-		}
-		return instance;
-	}
+	private DataSource m_dataSource;
+
+	private static final Log m_log = LogFactory.getLog(DocDao.class);
 
 	public void createDoc(final String name, final byte[] content,
 			final Integer controlId) {
@@ -119,6 +121,7 @@ public class DocDao extends Dao {
 
 	}
 
+	// @Secured("admin")
 	public Document getDocument(final Integer id) {
 
 		String sql = "select id, name, controlId, size  from documents where id = ?";
@@ -203,4 +206,22 @@ public class DocDao extends Dao {
 
 		return null;
 	}
+
+	// @Override
+	public void setDataSource(DataSource ds) {
+		m_dataSource = ds;
+
+	}
+
+	private NamedParameterJdbcTemplate npjt;
+
+	public void setNpjt(final NamedParameterJdbcTemplate value) {
+		npjt = value;
+	}
+
+	public void setStorage(final Storage st) {
+		m_storage = st;
+	}
+
+	private Storage m_storage;
 }

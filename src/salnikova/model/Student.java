@@ -1,10 +1,7 @@
 package salnikova.model;
 
 
-
-
-
-public class Student implements Comparable<Student> {
+public class Student implements Comparable<Student>, Identity {
 
 	public String getFirstName(){
 		return m_firstName;
@@ -20,11 +17,13 @@ public class Student implements Comparable<Student> {
 	public void setSecondName(final String name){
 		m_secondName = name;
 	}
-	
+
+	@Override
 	public Integer getId(){
 		return m_id;
 	}
 	
+	@Override
 	public void setId(final Integer id){
 		m_id= id;
 	}

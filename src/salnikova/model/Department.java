@@ -1,6 +1,7 @@
 package salnikova.model;
 
-public class Department {
+
+public class Department implements Identity {
 
 	public String getName(){
 		return m_name;
@@ -10,10 +11,12 @@ public class Department {
 		m_name= name;
 	}
 	
+	@Override
 	public void setId(final Integer id){
 		m_id = id;
 	}
-	
+
+	@Override
 	public Integer getId(){
 		return m_id;
 	}

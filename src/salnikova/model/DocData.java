@@ -1,11 +1,14 @@
 package salnikova.model;
 
-public class DocData {
 
+public class DocData implements Identity {
+
+	@Override
 	public Integer getId(){
 		return m_id;
 	}
 	
+	@Override
 	public void setId(final Integer id){
 		m_id= id;
 	}

@@ -1,302 +1,144 @@
 package salnikova.dao;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import salnikova.model.Attestation;
 import salnikova.model.Control;
+import salnikova.model.Group;
 import salnikova.model.Student;
+import salnikova.orm.SearchCriterion;
+import salnikova.orm.SearchQuery;
+import salnikova.orm.SortOrder;
+import salnikova.orm.Storage;
 
-public class StudentsDao extends Dao {
+public class StudentsDao {
 
-	private static StudentsDao instance;
 
-	public static StudentsDao get() {
-		if (instance == null) {
-			instance = new StudentsDao();
-		}
-		return instance;
-	}
+	private final static Log m_log = LogFactory.getLog(StudentsDao.class);
 
 	public Map<Control, Attestation> getAttestations(final Integer studentId) {
-		String sql = "select c.id control, c.maxpoints maxpoints, c.name name, (select a.points from attestations a where a.studentid = ? and a.controlid = control) points, "
-				+ "(select case when points is NULL then 1 else 0 end) cs from controls c";
+		
+		Student student = m_storage.load(Student.class, studentId);
+		Group g = m_storage.load(Group.class, student.getGroupId());
+		
+		SearchQuery q = new SearchQuery();
+		q.getCriterions().add(SearchCriterion.eq("ownerId", g.getTutorId()));
+		q.getOrders().add(SortOrder.asc("number"));
+		List<Control> controls = m_storage.search(Control.class, q);
 
-		Connection c = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
+		SearchQuery query = new SearchQuery();
+		query.getCriterions().add(SearchCriterion.eq("studentId", studentId));
+		List<Attestation> data = m_storage.search(Attestation.class, query);
+		
+		Map<Control, Attestation> map = new HashMap<>();
+		for (Control control : controls) {
 
-		Map<Control, Attestation> result = new HashMap<>();
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement(sql);
-			st.setInt(1, studentId);
-
-			rs = st.executeQuery();
-			while (rs.next()) {
-
-				Control control = new Control();
-				control.setId(rs.getInt("control"));
-				control.setMaxPoint(rs.getBigDecimal("maxpoints"));
-				control.setName(rs.getString("name"));
-
-				Attestation a = null;
-				if (rs.getInt("cs") == 0) {
-					a = new Attestation();
-					a.setControlId(control.getId());
-					a.setPoints(rs.getBigDecimal("points"));
-					a.setStudentId(studentId);
+			Attestation attestation = null;
+			inner: for (Attestation a : data) {
+				if (a.getControlId().equals(control.getId())) {
+					attestation = a;
+					break inner;
 				}
-				result.put(control, a);
 			}
 
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
+			map.put(control, attestation);
 		}
 
-		return result;
+		return map;
+
 	}
 
-	public void createStudent(final Student s) {
-		String sql = "insert into students (firstName, secondName, groupId) values(?, ? , ?)";
+	public Student createStudent(final String firstName,
+			final String secondName, final Integer groupId) {
+		Student s = new Student();
+		s.setFirstName(firstName);
+		s.setSecondName(secondName);
+		s.setGroupId(groupId);
 
-		Connection c = null;
-		PreparedStatement st = null;
+		return m_storage.save(s);
 
+	}
 
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement(sql);
-			st.setString(1, s.getFirstName());
-			st.setString(2, s.getSecondName());
-			st.setInt(3, s.getGroupId());
-			st.executeUpdate();
+	public List<Student> getStudents(final Integer groupId) {
+		SearchQuery q = new SearchQuery();
+		q.getCriterions().add(SearchCriterion.eq("groupId", groupId));
+		q.getOrders().add(SortOrder.asc("secondName"));
 
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
-		}
+		return m_storage.search(Student.class, q);
 
 	}
 
 	public Student findStudent(final Integer id) {
-		String sql = "select firstname, secondname, groupid from students where id = ?";
 
-		Connection c = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
+		return m_storage.load(Student.class, id);
 
-
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement(sql);
-			st.setInt(1, id);
-
-
-			rs = st.executeQuery();
-			if (rs.next()) {
-
-				Student student = new Student();
-				student.setFirstName(rs.getString("firstname"));
-				student.setSecondName(rs.getString("secondname"));
-				student.setGroupId(rs.getInt("groupid"));
-				student.setId(id);
-
-				return student;
-			}
-
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
-		}
-
-		return null;
 	}
 	
 	public void deleteStudent(final Integer id) {
-		String sql = "delete from students where id = ?";
-
-		Connection c = null;
-		PreparedStatement st = null;
-
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement(sql);
-			st.setInt(1, id);
-			st.executeUpdate();
-
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
-		}
+		Student student = m_storage.load(Student.class, id);
+		m_storage.delete(student);
 	}
 
-	public void deleteAttestation(final Integer studentId,
-			final Integer controlId) {
-		Connection c = null;
-		PreparedStatement st = null;
-
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement("delete from attestations where studentid = ? and controlid = ?");
-			st.setInt(1, studentId);
-			st.setInt(2, controlId);
-			st.executeUpdate();
-
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
-		}
+	public void deleteAttestation(final Integer id) {
+		Attestation a = m_storage.load(Attestation.class, id);
+		m_storage.delete(a);
 	}
 
-	public void createAttestation(final Integer studentId,
+	public Attestation createAttestation(final Integer studentId,
 			final Integer controlId, final BigDecimal points) {
-
-		ControlDao cDao = ControlDao.get();
-		Control control = cDao.getControl(controlId);
-
-		if (control.getMaxPoint().compareTo(points) < 0) {
+		Control c = m_storage.load(Control.class, controlId);
+		if (c.getMaxPoint().compareTo(points) < 0) {
 			throw new IllegalArgumentException(
-					"points provided exceed maxpoints for this control");
+					"value entered exceeds max points");
 		}
 
-		deleteAttestation(studentId, controlId);
+		SearchQuery q = new SearchQuery();
+		q.getCriterions().add(SearchCriterion.eq("studentId", studentId));
+		q.getCriterions().add(SearchCriterion.eq("controlId", controlId));
+		List<Attestation> attestations = m_storage.search(Attestation.class, q);
 
-		if (points.compareTo(BigDecimal.ZERO) < 0) {
-			return;
+		for (Attestation a : attestations) {
+			m_storage.delete(a);
 		}
 
-		Connection c = null;
-		PreparedStatement st = null;
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement("insert into attestations (points, studentid, controlid) values (?, ? , ?)");
-			st.setBigDecimal(1, points);
-			st.setInt(2, studentId);
-			st.setInt(3, controlId);
-			st.executeUpdate();
 
-
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
-		}
-
-	}
-	
-	public BigDecimal getTotalPoints(final Integer studentId) {
-		String sql = "select sum(points) total from attestations where studentid = ?";
-
-		Connection c = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		try {
-			c = m_dataSource.getConnection();
-			st = c.prepareStatement(sql);
-			st.setInt(1, studentId);
-
-			rs = st.executeQuery();
-			if (rs.next()) {
-
-				BigDecimal total = rs.getBigDecimal("total");
-
-				return total == null ? BigDecimal.ZERO : total;
-			}
-
-		} catch (Exception ex) {
-			m_log.error(ex);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (c != null) {
-					c.close();
-				}
-			} catch (Exception ex) {
-				m_log.error(ex);
-
-			}
+		if (points.compareTo(BigDecimal.ZERO) > 0) {
+			Attestation a = new Attestation();
+			a.setControlId(controlId);
+			a.setPoints(points);
+			a.setStudentId(studentId);
+			return m_storage.save(a);
 		}
 
 		return null;
 	}
-
 	
-	public BigDecimal getPointsRaffled() {
-		//TODO
-		throw new IllegalStateException("not implemented");
+
+	public BigDecimal getTotalPoints(final Integer studentId) {
+
+		SearchQuery q = new SearchQuery();
+		q.getCriterions().add(SearchCriterion.eq("studentId", studentId));
+		List<Attestation> data = m_storage.search(Attestation.class, q);
+
+		BigDecimal total = BigDecimal.ZERO;
+		for (Attestation a : data) {
+			total = total.add(a.getPoints());
+		}
+
+		return total;
+
 	}
+
+
+	public void setStorage(final Storage st) {
+		m_storage = st;
+	}
+
+	private Storage m_storage;
 }
