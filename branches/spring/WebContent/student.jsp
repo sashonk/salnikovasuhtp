@@ -56,7 +56,7 @@ if(request.getUserPrincipal()!=null){
 			<td><%= ctrl.getName() %></td>
 			<td <%= a==null ? "style='background: #FFFF99;'" : "" %>><%=  a==null? "" : a.getPoints() %> </td>
 			
-			<% if(request.isUserInRole("tutor") && tutorsDao.isTutorOf(user, student)) { %>
+			<% if(request.isUserInRole("admin") && tutorsDao.isTutorOf(user, student)) { %>
 			
 			<td ><a href="admin/attestation.html?id=<%=id%>&control=<%=ctrl.getId()%>">аттестовать</a></td>
 			
