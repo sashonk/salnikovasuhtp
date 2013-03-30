@@ -19,7 +19,7 @@
 </head>
 
 <body>
-<div><a href="..">на главную</a></div>
+<div><a href="../index.html">на главную</a></div>
 <div><a href="management.html">управление</a></div>
 <div style='margin-top: 5px'></div>
 

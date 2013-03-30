@@ -24,7 +24,7 @@ List<Tutor> tutors = dao.getAll();
 
 for(Tutor tutor : tutors){
 	%> 
-		<div> <%= ModelUtil.shortName(tutor) %> </div>
+		<div> <%= ModelUtil.fullName(tutor) %> </div>
 		<div>
 		
 		<% if(!Utils.isBlank(tutor.getDegree())){ %>
