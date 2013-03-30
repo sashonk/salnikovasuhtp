@@ -58,7 +58,7 @@ public class StudentsDao {
 			final String secondName, final Integer groupId) {
 		Student s = new Student();
 		s.setFirstName(firstName);
-		s.setSecondName(secondName);
+		s.setLastName(secondName);
 		s.setGroupId(groupId);
 
 		return m_storage.save(s);

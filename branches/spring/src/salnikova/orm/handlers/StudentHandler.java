@@ -48,7 +48,7 @@ public class StudentHandler implements Handler<Student> {
 			Student s = new Student();
 			s.setId(rs.getInt("id"));
 			s.setFirstName(rs.getString("firstName"));
-			s.setSecondName(rs.getString("secondName"));
+			s.setLastName(rs.getString("secondName"));
 			s.setGroupId(rs.getInt("groupId"));
 			return s;
 		}

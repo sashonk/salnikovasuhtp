@@ -1,20 +1,21 @@
 package salnikova.model;
 
+import salnikova.util.HasName;
 
-public class Student implements Comparable<Student>, Identity {
 
+public class Student implements  Identity, HasName {
+
+	@Override
 	public String getFirstName(){
 		return m_firstName;
 	}
-	public String getSecondName(){
-		return m_secondName;
-	}
-	
+
+	 
 	public void setFirstName(final String name){
 		m_firstName = name;
 	}
 	
-	public void setSecondName(final String name){
+	public void setLastName(final String name){
 		m_secondName = name;
 	}
 
@@ -64,15 +65,14 @@ public class Student implements Comparable<Student>, Identity {
 			return false;
 		return true;
 	}
-
 	@Override
-	public int compareTo(Student o) {
-		if (this.equals(o)) {
-			return 0;
-		}
- else {
-			return this.getSecondName().compareTo(o.getSecondName());
-		}
-
+	public String getMiddleName() {
+		return null;
 	}
+	@Override
+	public String getLastName() {
+		return m_secondName;
+	}
+
+
 }

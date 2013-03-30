@@ -99,8 +99,15 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 	</tr>
 	<% 
 		
-	Set<Student> set = new TreeSet<Student>(data.keySet());
-	for(Student student :set) { %>
+	//Set<Student> set = new TreeSet<Student>(data.keySet());
+	List<Student> list = new ArrayList<Student>(data.keySet());
+	Collections.sort(list, new Comparator<Student>(){
+		public int compare(Student o1, Student o2){
+			return o1.getLastName().compareTo(o2.getLastName());
+		}
+	});
+	
+	for(Student student :list) { %>
 	
 	<tr>
 		<td><a href="<%=Pages.STUDENT%>.html?id=<%=student.getId() %>"><%=salnikova.util.ModelUtil.shortName(student)%></a></td>
