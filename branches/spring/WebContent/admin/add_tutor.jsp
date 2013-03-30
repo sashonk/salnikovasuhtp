@@ -24,9 +24,9 @@ List<String> validationMessages = new LinkedList<String>();
 
 
 List<FormField> fields = new LinkedList<FormField>();
+fields.add(new FormField("lastName","фамилия", 3, FormField.Type.TEXT,  true));
 fields.add(new FormField( "firstName","имя",  1, FormField.Type.TEXT,  true));
 fields.add(new FormField("middleName", "отчество",  2, FormField.Type.TEXT, false));
-fields.add(new FormField("lastName","фамилия", 3, FormField.Type.TEXT,  true));
 fields.add(new FormField( "login", "логин", 4, FormField.Type.TEXT, true));
 fields.add(new FormField("password", "пароль", 5, FormField.Type.PASSWORD, true));
 fields.add(new FormField("post", "должность", 6,FormField.Type.TEXT, false));
