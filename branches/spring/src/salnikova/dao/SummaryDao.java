@@ -29,7 +29,7 @@ public class SummaryDao {
 
 		final Group group = m_storage.load(Group.class, groupId);
 		SearchQuery query = new SearchQuery();
-		if (group.getTutorId() != null) {
+		if (group.getTutorId() != null&& !group.getTutorId().equals(0)) {
 			query.getCriterions().add(
 					SearchCriterion.eq("ownerId", group.getTutorId()));
 		}
