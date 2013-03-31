@@ -28,7 +28,9 @@ public class StudentsDao {
 		Group g = m_storage.load(Group.class, student.getGroupId());
 		
 		SearchQuery q = new SearchQuery();
-		q.getCriterions().add(SearchCriterion.eq("ownerId", g.getTutorId()));
+		if(g.getTutorId()!=null && !g.getTutorId().equals(0)){
+			q.getCriterions().add(SearchCriterion.eq("ownerId", g.getTutorId()));
+		}
 		q.getOrders().add(SortOrder.asc("number"));
 		List<Control> controls = m_storage.search(Control.class, q);
 
