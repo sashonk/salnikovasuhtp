@@ -11,14 +11,14 @@ public class StudentHandler implements Handler<Student> {
 
 	@Override
 	public String getQueryBase() {
-		return " select id, firstName, secondName, groupId from students ";
+		return " select id, firstName, lastName, middleName, groupId from students ";
 	}
 
 
 
 	@Override
 	public String getUpdateBase() {
-		return " update students set firstName = :firstName, secondName = :secondName, groudId = :groupId where id = :id ";
+		return " update students set firstName = :firstName, lastName = :lastName, middleName= :middleName, groudId = :groupId where id = :id ";
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class StudentHandler implements Handler<Student> {
 
 	@Override
 	public String getInsertBase() {
-		return " insert into students (firstName, secondName, groupId) values (:firstName, :secondName, :groupId) ";
+		return " insert into students (id, firstName, lastName, middleName, groupId) values (:id, :firstName , :lastName,:middleName, :groupId) ";
 	}
 
 	@Override
@@ -48,7 +48,8 @@ public class StudentHandler implements Handler<Student> {
 			Student s = new Student();
 			s.setId(rs.getInt("id"));
 			s.setFirstName(rs.getString("firstName"));
-			s.setLastName(rs.getString("secondName"));
+			s.setLastName(rs.getString("lastName"));
+		
 			s.setGroupId(rs.getInt("groupId"));
 			return s;
 		}

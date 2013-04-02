@@ -26,7 +26,7 @@ public class AttestationHandler implements Handler<Attestation> {
 
 	@Override
 	public String getInsertBase() {
-		return " insert into attestations (points, studentid, controlId) values (:points, :studentId, :controlId) ";
+		return " insert into attestations (id, points, studentid, controlId) values (:id, :points, :studentId, :controlId) ";
 	}
 
 	@Override

@@ -24,6 +24,11 @@ public class TutorsDao {
 	public void delete(final Integer id) {
 		Tutor t = m_storage.load(Tutor.class, id);
 		m_storage.delete(t);
+		
+		Map<String ,Object> mm = new HashMap<>();
+		mm.put("name", t.getLogin());
+		npjt.update("delete from users where name = :name", mm);
+		npjt.update("delete from user_roles where name = :name", mm);
 	}
 
 
