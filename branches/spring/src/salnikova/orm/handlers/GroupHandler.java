@@ -28,7 +28,7 @@ public class GroupHandler implements Handler<Group> {
 
 	@Override
 	public String getInsertBase() {
-		return " insert into groups (name, depId, grade, tutorId) values (:name, :depId, :grade, :tutorId) ";
+		return " insert into groups (id, name, depId, grade, tutorId) values (:id, :name, :depId, :grade, :tutorId) ";
 	}
 
 	@Override

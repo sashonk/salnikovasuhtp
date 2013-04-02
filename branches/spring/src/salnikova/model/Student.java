@@ -16,7 +16,7 @@ public class Student implements  Identity, HasName {
 	}
 	
 	public void setLastName(final String name){
-		m_secondName = name;
+		m_lastName = name;
 	}
 
 	@Override
@@ -38,8 +38,9 @@ public class Student implements  Identity, HasName {
 		m_groupId = groupId;
 	}
 
-	private String m_secondName;
+	private String m_lastName;
 	private String m_firstName;
+	private String m_middleName;
 	private Integer m_groupId;
 	private Integer m_id;
 	@Override
@@ -67,11 +68,15 @@ public class Student implements  Identity, HasName {
 	}
 	@Override
 	public String getMiddleName() {
-		return null;
+		return m_middleName;
 	}
 	@Override
 	public String getLastName() {
-		return m_secondName;
+		return m_lastName;
+	}
+	
+	public void setMiddleName(final String value){
+		m_middleName = value;
 	}
 
 

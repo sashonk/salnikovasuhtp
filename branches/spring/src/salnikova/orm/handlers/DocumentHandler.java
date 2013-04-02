@@ -27,7 +27,7 @@ public class DocumentHandler implements Handler<Document> {
 
 	@Override
 	public String getInsertBase() {
-		return " insert into documents (controlId, size, name) values (:controlId, :size, :name) ";
+		return " insert into documents (id, controlId, size, name) values (:id, :controlId, :size, :name) ";
 	}
 
 	@Override

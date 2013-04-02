@@ -28,7 +28,7 @@ public class ControlHandler implements Handler<Control> {
 
 	@Override
 	public String getInsertBase() {
-		return " insert into controls (name, maxPoints, number, ownerId) values (:name, :maxPoint, :number, :ownerId) ";
+		return " insert into controls (id, name, maxPoints, number, ownerId) values (:id, :name, :maxPoint, :number, :ownerId) ";
 	}
 
 	@Override

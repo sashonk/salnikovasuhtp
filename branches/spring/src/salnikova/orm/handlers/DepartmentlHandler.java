@@ -29,7 +29,7 @@ public class DepartmentlHandler implements Handler<Department> {
 
 	@Override
 	public String getInsertBase() {
-		return " insert into departments (name) values (:name) ";
+		return " insert into departments (id, name) values (:id, :name) ";
 	}
 
 	@Override

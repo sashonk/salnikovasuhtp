@@ -19,7 +19,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 final TutorsDao tutorsDao = ctx.getBean(TutorsDao.class);
 final Tutor user = tutorsDao.findProfile(request.getUserPrincipal().getName());
 
-
+ 
 	request.setCharacterEncoding("utf-8");
 
 	List<String> msgs = new LinkedList<String>();

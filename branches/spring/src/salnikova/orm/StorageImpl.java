@@ -14,7 +14,6 @@ import salnikova.model.Identity;
 import salnikova.orm.handlers.Handler;
 
 public class StorageImpl implements Storage {
-	private static final Log log = LogFactory.getLog(StorageImpl.class);
 
 	private NamedParameterJdbcTemplate npjt;
 
@@ -83,20 +82,22 @@ public class StorageImpl implements Storage {
 	public <T extends Identity> T save(final T identity) {
 		HandlersRegistry registry = HandlersRegistry.getInstance();
 		Handler<?> handler = registry.findHandler(identity.getClass());
-		SqlParameterSource source = new BeanPropertySqlParameterSource(identity);
-		Integer id = identity.getId();
-		if (id != null) {
-			npjt.update(handler.getUpdateBase(), source);
-		} else {
+		
+		if (identity.getId() != null) {
+			delete(identity);
+			SqlParameterSource source = new BeanPropertySqlParameterSource(identity);
 			npjt.update(handler.getInsertBase(), source);
-			id = npjt.queryForInt(
-					String.format("select max(id) from %s",
-							handler.getTableName()),
-					new HashMap<String, Object>());
+		} else {
+			Map<String, ?> mm = new HashMap<>();
+			int maxId = npjt.queryForInt("select case when count(1) = 0 then 0 else max(id) end from "+handler.getTableName(), mm);
+			identity.setId(maxId+1);
+			
+			SqlParameterSource source = new BeanPropertySqlParameterSource(identity);
+			npjt.update(handler.getInsertBase(), source);
 
 		}
 
-		Object object = load(identity.getClass(), id);
+		Object object = load(identity.getClass(), identity.getId());
 		return (T) object;
 	}
 

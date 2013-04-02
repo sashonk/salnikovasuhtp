@@ -10,7 +10,7 @@ import="java.math.*"
 		import="org.springframework.web.context.support.WebApplicationContextUtils"
 		import="org.springframework.web.context.WebApplicationContext"
 		import="org.springframework.web.servlet.support.RequestContextUtils"
-
+import="salnikova.util.ModelUtil"
 %>
 
 <%
@@ -46,7 +46,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 		Student s = dao.createStudent(firstName, secondName, group);
 		
 		%> 
-			<div>студент <b><%= s.getLastName() %></b> добавлен</div>
+			<div>студент <b><%= ModelUtil.shortName(s) %></b> добавлен</div>
 		<%
 		
 		

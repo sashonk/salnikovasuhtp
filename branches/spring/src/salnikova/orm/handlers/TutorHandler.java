@@ -26,7 +26,7 @@ public class TutorHandler implements Handler<Tutor> {
 
 	@Override
 	public String getInsertBase() {
-		return " insert into tutors (firstName, middleName, lastName, post, degree, email, login) values (:firstName, :middleName, :lastName, :post, :degree, :email, :login) ";
+		return " insert into tutors (id, firstName, middleName, lastName, post, degree, email, login) values (:id, :firstName, :middleName, :lastName, :post, :degree, :email, :login) ";
 	}
 
 	@Override
