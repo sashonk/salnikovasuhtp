@@ -1,8 +1,9 @@
-CREATE DATABASE IF NOT EXISTS salnikova2 CHARACTER SET UTF8;
+DROP DATABASE IF EXISTS salnikova2;
+CREATE DATABASE  salnikova2 CHARACTER SET UTF8;
 USE salnikova2;
 
 CREATE TABLE IF NOT EXISTS users(
-	name VARCHAR(15) PRIMARY KEY,
+	name VARCHAR(15) NOT NULL,
 	password VARCHAR(60) NOT NULL
 );
 
@@ -11,34 +12,31 @@ CREATE TABLE IF NOT EXISTS user_roles(
 	name VARCHAR(15) NOT NULL,
 	role_name VARCHAR(15) NOT NULL,
 	PRIMARY KEY (name, role_name)
+
 );
 
 CREATE TABLE IF NOT EXISTS tutors(
-        id INT PRIMARY KEY ,
-        firstName VARCHAR(255),
-        middleName VARCHAR(255),
-        lastName VARCHAR(255),
-        degree VARCHAR(255),
-        post VARCHAR(255),
-        email VARCHAR(50),
-        login VARCHAR(15),
-        FOREIGN KEY(login) REFERENCES users(name) ON DELETE SET NULL
+	id INT PRIMARY KEY ,
+	firstName VARCHAR(255),
+	middleName VARCHAR(255),
+	lastName VARCHAR(255),
+	degree VARCHAR(255),
+	post VARCHAR(255),
+	email VARCHAR(50),
+	login VARCHAR(15)
+
 );
 
-
-
 CREATE TABLE IF NOT EXISTS controls (
-	id INT PRIMARY KEY ,
+	id INT PRIMARY KEY,
 	name VARCHAR(255),
 	maxPoints REAL,
 	ownerId INT,
-	number INT,
-	
-	FOREIGN KEY(ownerId) REFERENCES tutors(id) ON DELETE SET NULL	
+	number INT
 );
 
 CREATE TABLE IF NOT EXISTS departments (
-	id INT PRIMARY KEY,
+	id INT PRIMARY KEY ,
 	name VARCHAR(255),
 	fullname VARCHAR(255)
 
@@ -49,52 +47,51 @@ CREATE TABLE IF NOT EXISTS groups (
 	name VARCHAR(255),
 	depId INT,
 	grade INT,
-	tutorId INT,
+	tutorId INT
 
-	FOREIGN KEY(depId) REFERENCES departments(id) ON DELETE SET NULL,
-	FOREIGN KEY(tutorId) REFERENCES tutors(id) ON DELETE SET NULL	
+
 );
 
 
 CREATE TABLE IF NOT EXISTS students (
 	id INT PRIMARY KEY ,
 	firstName VARCHAR(255),
-	lastName VARCHAR(255),
 	middleName VARCHAR(255),
-	groupId INT,
-
-	FOREIGN KEY(groupId) REFERENCES groups(id) ON DELETE SET NULL
+	lastName VARCHAR(255),
+	groupId INT
 );
 
 CREATE TABLE IF NOT EXISTS attestations(
-	id INT PRIMARY KEY,
+	id INT PRIMARY KEY ,
 	studentId INT,
 	points REAL,
-	controlId INT,
-		
-	FOREIGN KEY(studentId) REFERENCES students(id) ON DELETE CASCADE,
-	FOREIGN KEY(controlId) REFERENCES controls(id) ON DELETE CASCADE
+	controlId INT
 );
 
 CREATE TABLE IF NOT EXISTS documents(
 	id INT PRIMARY KEY ,
 	controlId INT,
 	size LONG,
-	name VARCHAR(255),
-	FOREIGN KEY(controlId) REFERENCES controls(id) ON DELETE CASCADE
+	name VARCHAR(255)
 );
 
 
 CREATE TABLE IF NOT EXISTS docdata(
 	id INT,
-	content MEDIUMBLOB,
-	FOREIGN KEY(id) REFERENCES documents(id) ON DELETE CASCADE
+	content MEDIUMBLOB
 );
 
 
 
 
-
+#INSERT INTO tutors(id, firstName, lastName, login, email) values (1, 'Администратор', 'Администраторов', 'admin', 'admin@mail.ru');
+#INSERT INTO users(name, password) values ('admin', 'd033e22ae348aeb5660fc2140aec35850c4da997');
+#INSERT INTO user_roles(name, role_name) values ('admin', 'admin');
+#INSERT INTO DEPARTMENTS (id, name, fullname) values (1, 'ТОХФ', 'Факультет технологии органических веществ и химико-фармацевтических средств');
+#INSERT INTO DEPARTMENTS (id,name, fullname) values (2, 'ИХТ', 'Инженерный химико-технологический факультет');
+#INSERT INTO DEPARTMENTS (id,name, fullname) values (3, 'ФизХим', 'Факультет физической химии');
+#INSERT INTO DEPARTMENTS (id,name, fullname) values (4, 'НПМ', 'Факультет нефтегазохимии и полимерных материалов');
+ 
 
 
 
