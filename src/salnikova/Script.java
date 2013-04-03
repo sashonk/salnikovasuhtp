@@ -177,7 +177,7 @@ public class Script {
 		
 		pw.println("saving attestations<br><br>");
 		for(Attestation a : data){
-			st.save(a);
+			st2.save(a);
 		}
 		
 		
