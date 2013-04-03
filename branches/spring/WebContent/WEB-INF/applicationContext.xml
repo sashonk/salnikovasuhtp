@@ -45,6 +45,13 @@
            <property name="npjt" ref="npjt2"/>   
     </bean>
 
+    <bean class="salnikova.Script" >
+	<property name="storage" ref="storage" />
+	<property name="storage2" ref="storage2" />
+	<property name="dataSource" ref="ds" />
+	<property name="dataSource2" ref="ds2" />
+    </bean>
+
     
     <bean id="controlDao" class="salnikova.dao.ControlDao">
          <property name="storage" ref="storage" />                   
@@ -76,11 +83,5 @@
          <property name="npjt" ref="npjt"/>              
 	</bean>
 	
-	<bean class="salnikova.Script">
-	        <property name="storage" ref="storage" />      
-	        <property name="storage2" ref="storage2" />      
-            <property name="dataSource" ref="ds" />    	             
-            <property name="dataSource2" ref="ds2" />                
-	</bean>
-    
+
 </beans>
