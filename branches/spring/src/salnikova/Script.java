@@ -1,5 +1,6 @@
 package salnikova;
 
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,25 +27,43 @@ import salnikova.orm.SearchQuery;
 import salnikova.orm.Storage;
 
 public class Script {
-	public static void main(String [] argc){
-		System.out.println("BEGIN");
+	
+	private DataSource ds;
+	
+	private DataSource ds2;
+	
+	private Storage st;
+	
+	private Storage st2;
+	
+	public void setDataSource(final DataSource ds){
+		this.ds = ds;
+	}
+	
+	public void setDataSource2(final DataSource ds){
+		this.ds2 = ds;
+	}
+	
+	public void setStorage(final Storage s){
+		st = s;
+	}
+	
+	public void setStorage2(final Storage s){
+		st2 = s;
+	}
+	
+	public  void doActions(PrintWriter pw){
 		
-		System.out.println("creating context");
-		ApplicationContext ctx = new FileSystemXmlApplicationContext("WebContent/WEB-INF/applicationContext.xml");
-		DataSource ds = ctx.getBean("ds",DataSource.class);
-		DataSource ds2 = ctx.getBean("ds2",DataSource.class);
-		Storage st = ctx.getBean("storage", Storage.class);
-		Storage st2 = ctx.getBean("storage2", Storage.class);
+		
+		pw.println("BEGIN<br>");		
+		pw.println("creating context<br>");
+
 		
 		
 		NamedParameterJdbcTemplate npjt = new NamedParameterJdbcTemplate(ds);
 		NamedParameterJdbcTemplate npjt2 = new NamedParameterJdbcTemplate(ds2);
-		
-
-			
-			
-		
-		System.out.println("fetching accounts");
+										
+		pw.println("fetching accounts<br>");
 		List<UserData> uds =npjt.query("select name, password from users", new HashMap(), new RowMapper<UserData>(){
 
 			@Override
@@ -56,7 +75,7 @@ public class Script {
 				return ud;
 			}});
 		
-		System.out.println("saving accounts\n");
+		pw.println("saving accounts<br><br>");
 		for(UserData ud : uds ){
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("name", ud.name);
@@ -65,7 +84,7 @@ public class Script {
 		}
 		
 		
-		System.out.println("fetching user roles");
+		pw.println("fetching user roles<br>");
 		List<Role> roles =npjt.query("select name, role_name from user_roles", new HashMap(), new RowMapper<Role>(){
 
 			@Override
@@ -77,7 +96,7 @@ public class Script {
 				return r;
 			}});
 		
-		System.out.println("saving user roles\n");
+		pw.println("saving user roles<br><br>");
 		for(Role r : roles){
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("name", r.name);
@@ -86,41 +105,54 @@ public class Script {
 		}
 		
 		
-		System.out.println("fetching tutors");
+		pw.println("fetching tutors<br>");
 		List<Tutor> tutors = st.search(Tutor.class, new SearchQuery());
 		for(Tutor t : tutors){
 			st2.save(t);
 		}
 		
 		
-		System.out.println("fetching departments");
+		pw.println("fetching departments<br>");
 		List<Department> deps = st.search(Department.class, new SearchQuery());
 		
-		System.out.println("saving departments\n");
+		pw.println("saving departments<br><br>");
 		for(Department d : deps){
 			st2.save(d);
 		}
 		
 		
-		System.out.println("fetching groups");
+		pw.println("fetching groups<br>");
 		List<Group> groups = st.search(Group.class, new SearchQuery());
-		System.out.println("saving groups\n");
+		pw.println("saving groups<br><br>");
 		for(Group g : groups){
 			st2.save(g);
 		}
 		
 		
-		System.out.println("fetching students");
-		List<Student> students = st.search(Student.class, new SearchQuery());
-		System.out.println("saving students\n");
+		pw.println("fetching students<br>");
+		Map<String, ?> ms= new HashMap<>();
+		List<Student> students = npjt.query("select id, firstName, secondName, groupId from students", ms, new RowMapper<Student>(){
+
+			@Override
+			public Student mapRow(ResultSet rs, int arg1) throws SQLException {
+				Student s = new Student();
+				s.setId(rs.getInt("id"));
+				s.setFirstName(rs.getString("firstName"));
+				s.setLastName(rs.getString("secondName"));
+				s.setMiddleName("");
+				s.setGroupId(rs.getInt("groupId"));
+				return s;
+			}});
+
+		pw.println("saving students<br><br>");
 		for(Student s : students){
 			st2.save(s);
 		}		
 		
 		
-		System.out.println("fetching controls");
+		pw.println("fetching controls<br>");
 		List<Control> controls = st.search(Control.class, new SearchQuery());
-		System.out.println("saving controls\n");
+		pw.println("saving controls<br><br>");
 		for(Control c : controls){
 			st2.save(c);
 		}
@@ -129,7 +161,7 @@ public class Script {
 		
 		
 		
-		System.out.println("querying attestations");
+		pw.println("querying attestations<br>");
 		List<Attestation> data = npjt.query("select studentId, controlId, points from attestations", new HashMap(), new RowMapper<Attestation>(){
 
 			@Override
@@ -143,20 +175,20 @@ public class Script {
 				return a;
 			}});
 		
-		System.out.println("saving attestations\n");
+		pw.println("saving attestations<br><br>");
 		for(Attestation a : data){
 			st.save(a);
 		}
 		
 		
-		System.out.println("fetching documents");
+		pw.println("fetching documents<br>");
 		List<Document> docs = st.search(Document.class, new SearchQuery());
-		System.out.println("saving documents\n");
+		pw.println("saving documents<br><br>");
 		for(Document d : docs){
 			st2.save(d);
 		} 
 		
-		System.out.println("fetching docdatas");
+		pw.println("fetching docdatas<br>");
 		Map<String, ?> m = new HashMap<>();
 		List<DocData> ddatas = npjt.query("select id, content from docdata", m, new RowMapper<DocData>() {
 
@@ -169,7 +201,7 @@ public class Script {
 			}
 		});
 		
-		System.out.println("saving docdatas\n");
+		pw.println("saving docdatas<br><br>");
 		
 		for(DocData d : ddatas){
 			Map<String, Object> m2= new HashMap<>();
@@ -179,7 +211,7 @@ public class Script {
 		}
 
 		
-		System.out.println("END");
+		pw.println("END<br>");
 		
 		
 	}
