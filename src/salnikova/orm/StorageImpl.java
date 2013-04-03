@@ -131,11 +131,10 @@ public class StorageImpl implements Storage {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("ID", id);
-
-		Object o = npjt.queryForObject(sb.toString(), map,
-				handler.getRowMapper());
-		if (o != null) {
-			return (T) o;
+		
+		List<?> result =npjt.query(sb.toString(), map, handler.getRowMapper());
+		if (result.size() >0 ) {
+			return (T)result.get(0);
 		}
 
 		return null;
