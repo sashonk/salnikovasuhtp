@@ -48,6 +48,13 @@ if(request.getUserPrincipal()!=null){
 		<td>баллы</td>
 	<tr>
 	
+	List<Control> controls = new ArrayList<Control>(data.keySet());
+	Collections.sort(controls, new Comparator<Control>(){
+		public int compare(Control left, Control right){
+			return left.getNumber().compareTo(right.getNumber());
+		}
+	});
+	
 	<% for(Control ctrl : data.keySet()) { 
 		Attestation a = data.get(ctrl);
 		
