@@ -128,6 +128,9 @@ public class StudentsDao {
 		Student s = m_storage.load(Student.class, studentId);
 		Group g = m_storage.load(Group.class, s.getGroupId());
 		Tutor t = m_storage.load(Tutor.class, g.getTutorId());
+		if(t==null){
+			return BigDecimal.ZERO;
+		}
 
 		SearchQuery q = new SearchQuery();
 		q.getCriterions().add(SearchCriterion.eq("studentId", studentId));
