@@ -19,7 +19,7 @@ import="java.math.*"
 <%
 final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
 
-Script s = ctx.getBean(Script.class);
+//Script s = ctx.getBean(Script.class);
 
 s.doActions(response.getWriter());
 
