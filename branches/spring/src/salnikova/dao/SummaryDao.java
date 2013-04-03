@@ -28,11 +28,15 @@ public class SummaryDao {
 		}
 
 		final Group group = m_storage.load(Group.class, groupId);
-		SearchQuery query = new SearchQuery();
-		if (group.getTutorId() != null&& !group.getTutorId().equals(0)) {
-			query.getCriterions().add(
-					SearchCriterion.eq("ownerId", group.getTutorId()));
+		if(group.getTutorId()==null || group.getTutorId().equals(0)){
+			return new LinkedList<>();
 		}
+		
+		SearchQuery query = new SearchQuery();
+
+		query.getCriterions().add(
+					SearchCriterion.eq("ownerId", group.getTutorId()));
+		
 		query.getOrders().add(SortOrder.asc("number"));
 
 		return m_storage.search(Control.class, query);
@@ -45,18 +49,11 @@ public class SummaryDao {
 			return map;
 		}
 
-		final Group group = m_storage.load(Group.class, groupId);
 		SearchQuery q = new SearchQuery();
 		q.getCriterions().add(SearchCriterion.eq("groupId", groupId));
 
 		List<Student> result = m_storage.search(Student.class, q);
-		
-		SearchQuery query = new SearchQuery();
-		if (group.getTutorId() != null) {
-			query.getCriterions().add(
-					SearchCriterion.eq("ownerId", group.getTutorId()));
-		}
-		query.getOrders().add(SortOrder.asc("number"));
+
 		List<Control> controls = getControls(groupId);
 
 		for (Student student : result) {
