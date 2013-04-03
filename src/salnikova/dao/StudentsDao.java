@@ -12,6 +12,7 @@ import salnikova.model.Attestation;
 import salnikova.model.Control;
 import salnikova.model.Group;
 import salnikova.model.Student;
+import salnikova.model.Tutor;
 import salnikova.orm.SearchCriterion;
 import salnikova.orm.SearchQuery;
 import salnikova.orm.SortOrder;
@@ -123,14 +124,21 @@ public class StudentsDao {
 	
 
 	public BigDecimal getTotalPoints(final Integer studentId) {
+		
+		Student s = m_storage.load(Student.class, studentId);
+		Group g = m_storage.load(Group.class, s.getGroupId());
+		Tutor t = m_storage.load(Tutor.class, g.getTutorId());
 
 		SearchQuery q = new SearchQuery();
 		q.getCriterions().add(SearchCriterion.eq("studentId", studentId));
 		List<Attestation> data = m_storage.search(Attestation.class, q);
-
 		BigDecimal total = BigDecimal.ZERO;
 		for (Attestation a : data) {
-			total = total.add(a.getPoints());
+			Control c = m_storage.load(Control.class, a.getControlId());
+			
+			if(t.getId().equals(c.getOwnerId())){
+				total = total.add(a.getPoints());
+			}
 		}
 
 		return total;
