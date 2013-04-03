@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS user_roles(
 );
 
 CREATE TABLE IF NOT EXISTS tutors(
-        id INT PRIMARY KEY AUTO_INCREMENT,
+        id INT PRIMARY KEY ,
         firstName VARCHAR(255),
         middleName VARCHAR(255),
         lastName VARCHAR(255),
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS tutors(
 
 
 CREATE TABLE IF NOT EXISTS controls (
-	id INT PRIMARY KEY AUTO_INCREMENT,
+	id INT PRIMARY KEY ,
 	name VARCHAR(255),
 	maxPoints REAL,
 	ownerId INT,
@@ -38,14 +38,14 @@ CREATE TABLE IF NOT EXISTS controls (
 );
 
 CREATE TABLE IF NOT EXISTS departments (
-	id INT PRIMARY KEY AUTO_INCREMENT,
+	id INT PRIMARY KEY,
 	name VARCHAR(255),
 	fullname VARCHAR(255)
 
 );
 
 CREATE TABLE IF NOT EXISTS groups (
-	id INT PRIMARY KEY AUTO_INCREMENT,
+	id INT PRIMARY KEY ,
 	name VARCHAR(255),
 	depId INT,
 	grade INT,
@@ -57,16 +57,17 @@ CREATE TABLE IF NOT EXISTS groups (
 
 
 CREATE TABLE IF NOT EXISTS students (
-	id INT PRIMARY KEY AUTO_INCREMENT,
+	id INT PRIMARY KEY ,
 	firstName VARCHAR(255),
-	secondName VARCHAR(255),
+	lastName VARCHAR(255),
+	middleName VARCHAR(255),
 	groupId INT,
 
 	FOREIGN KEY(groupId) REFERENCES groups(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS attestations(
-	id INT PRIMARY KEY AUTO_INCREMENT,
+	id INT PRIMARY KEY,
 	studentId INT,
 	points REAL,
 	controlId INT,
@@ -76,7 +77,7 @@ CREATE TABLE IF NOT EXISTS attestations(
 );
 
 CREATE TABLE IF NOT EXISTS documents(
-	id INT PRIMARY KEY AUTO_INCREMENT,
+	id INT PRIMARY KEY ,
 	controlId INT,
 	size LONG,
 	name VARCHAR(255),

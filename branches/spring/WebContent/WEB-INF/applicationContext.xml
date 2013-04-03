@@ -5,22 +5,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
            
-    <bean id="ds2" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="username" value="root"/>
-        <property name="password" value="8926sas"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/salnikova2"/>
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="maxActive" value="30"/>        
-         <property name="maxIdle" value="8"/>
-        <property name="minIdle" value="2"/>   
-        <property name="validationQuery" value="select count(1) from users"/>         
-        <property name="testOnBorrow" value="true"/>          
-    </bean>
      
     <bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="username" value="root"/>
         <property name="password" value="8926sas"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/salnikova"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/salnikova2"/>
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="maxActive" value="30"/>        
          <property name="maxIdle" value="8"/>
@@ -33,24 +22,14 @@
         <constructor-arg ref="ds"></constructor-arg>               
     </bean>
     
-    <bean id="npjt2" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-        <constructor-arg ref="ds2"></constructor-arg>               
-    </bean>
+
     
     <bean id="storage" class="salnikova.orm.StorageImpl">
            <property name="npjt" ref="npjt"/>   
     </bean>
     
-   <bean id="storage2" class="salnikova.orm.StorageImpl">
-           <property name="npjt" ref="npjt2"/>   
-    </bean>
 
-    <bean class="salnikova.Script" >
-	<property name="storage" ref="storage" />
-	<property name="storage2" ref="storage2" />
-	<property name="dataSource" ref="ds" />
-	<property name="dataSource2" ref="ds2" />
-    </bean>
+
 
     
     <bean id="controlDao" class="salnikova.dao.ControlDao">
