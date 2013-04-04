@@ -13,6 +13,7 @@
   	 	<sec:intercept-url pattern="/login.html" access="permitAll" />
          
   		<sec:intercept-url pattern="/*.html" access="permitAll" />  	 	
+
  
   		<sec:intercept-url pattern="/admin/add_control.html" access="isAuthenticated()" />    
   		<sec:intercept-url pattern="/admin/management.html" access="isAuthenticated()" />    		
