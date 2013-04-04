@@ -19,7 +19,7 @@
   		<sec:intercept-url pattern="/admin/management.html" access="isAuthenticated()" />    		
        <sec:intercept-url pattern="/admin/*" access="hasRole('admin')" />         
         <sec:intercept-url pattern="/**" access="denyAll" />
-        <sec:form-login />
+        <sec:form-login login-page="/login.html" authentication-failure-url="/login.html?fail=1"  />
         <sec:logout logout-success-url="/index.html" />
         <sec:remember-me key="rememberMe" token-validity-seconds="30"/>
     </sec:http>
