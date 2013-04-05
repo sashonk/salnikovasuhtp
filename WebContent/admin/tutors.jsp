@@ -71,7 +71,7 @@ if(id!=null){
 	<form>
 	фак-т 
 	
-	<select class='departments-combo fire-change-on-ready'>	
+	<select class='departments-combo autowire'>	
 		<% for(Department dep : deps){ %>
 			<option value='<%= dep.getId() %>'><%= dep.getName() %></option>
 		

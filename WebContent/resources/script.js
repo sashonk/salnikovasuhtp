@@ -11,7 +11,7 @@ $(function(){
 		$('select.groups-combo').change();
 	});
 		
-	$('select.departments-combo').filter('.fire-change-on-ready').change();
+	$('select.departments-combo').filter('.autowire').change();
 });
 
 function getGroups(depId){
