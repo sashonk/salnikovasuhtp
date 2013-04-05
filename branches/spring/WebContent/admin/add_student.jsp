@@ -73,7 +73,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 	
 	<tr>
 		<td>факультет</td>
-		<td><select class='departments-combo fire-change-on-ready'>
+		<td><select class='departments-combo autowire'>
 				<% for(Department d : deps){ %>
 				
 					<option value="<%= d.getId() %>" ><%= d.getName() %></option>
