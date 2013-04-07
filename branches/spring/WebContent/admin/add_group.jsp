@@ -10,6 +10,7 @@ import="java.math.*"
 		import="org.springframework.web.context.support.WebApplicationContextUtils"
 		import="org.springframework.web.context.WebApplicationContext"
 		import="org.springframework.web.servlet.support.RequestContextUtils"
+		import="salnikova.util.Utils"
 
 %>
 
@@ -21,20 +22,37 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 	String depStr = request.getParameter("dep");
 	String gradeStr = request.getParameter("grade");
 	
+	List<String> errors = new LinkedList<String>();
+	request.setAttribute("errors", errors);
+	boolean show = true;
 	if(name!=null && depStr!= null && gradeStr!=null){
-		Integer dep = Integer.parseInt(depStr);		
-		Integer grade = Integer.parseInt(gradeStr);
-		GroupsDao dao = ctx.getBean(GroupsDao.class);
 		
-		dao.createGroup(name, dep, grade);
-		
-		%> 
-			<div>группа <b><%= name %></b> добавлена</div>
-		<%
-		
+		try{
+			Integer dep = Integer.parseInt(depStr);		
+			Integer grade = Integer.parseInt(gradeStr);
+			
+			if(Utils.isBlank(name)){
+				errors.add("не введено название");
+			}
+			
+			if(errors.size()==0){
+				GroupsDao dao = ctx.getBean(GroupsDao.class);			
+				dao.createGroup(name, dep, grade);
+				
+				%> 
+					<div>группа <b><%= name %></b> добавлена</div>
+				<%
+				
+				show = false;
+			}
+		}
+		catch(Exception ex){
+			errors.add("не удалось добавить группу: "+ ex.toString());
+		}
 		
 	}
-	else{
+	
+	if(show){
 	
 	DepartmentsDao dao =ctx.getBean(DepartmentsDao.class);
 	List<Department> departments = dao.getDepartments();
@@ -47,12 +65,12 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 
 	<tr>
 		<td>курс</td>
-		<td><input name="grade"/></td>
+		<td><input name="grade" value='<%=gradeStr==null? "" : gradeStr %>'/></td>
 	</tr>
 
 	<tr>
 		<td>название</td>
-		<td><input name="name"/></td>
+		<td><input name="name"  value='<%=name==null? "" : name %>'/></td>
 	</tr>
 	
 	
@@ -74,5 +92,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 	
 	<input type="hidden" name="page" value="add_group" />
 </form>
+
+<jsp:include page="../resources/errors.jsp" />
 
 <% } %>

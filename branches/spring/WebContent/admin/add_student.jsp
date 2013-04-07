@@ -10,7 +10,7 @@ import="java.math.*"
 		import="org.springframework.web.context.support.WebApplicationContextUtils"
 		import="org.springframework.web.context.WebApplicationContext"
 		import="org.springframework.web.servlet.support.RequestContextUtils"
-import="salnikova.util.ModelUtil"
+import="salnikova.util.*"
 %>
 
 <%
@@ -37,21 +37,42 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 	}
 	
 	
-	
-	
+	List<String> errors = new LinkedList<String>();
+	request.setAttribute("errors", errors);
+	boolean show = true;
 	if(firstName!=null && secondName!= null && groupIdStr!=null){
-		Integer group = Integer.parseInt(groupIdStr);
 		
-		StudentsDao dao = ctx.getBean(StudentsDao.class);
-		Student s = dao.createStudent(firstName, secondName, group);
-		
-		%> 
-			<div>студент <b><%= ModelUtil.shortName(s) %></b> добавлен</div>
-		<%
-		
-		
+		try{
+			Integer group = Integer.parseInt(groupIdStr);
+			
+			if(Utils.isBlank(firstName)){
+				errors.add("не введено имя");
+			}
+			
+			if(Utils.isBlank(secondName)){
+				errors.add("не введена фамилия");				
+			}
+			
+			if(errors.size()==0){
+					StudentsDao dao = ctx.getBean(StudentsDao.class);
+					Student s = dao.createStudent(firstName, secondName, group);
+				
+				
+				%> 
+					<div>студент <b><%= ModelUtil.shortName(s) %></b> добавлен</div>
+				<%
+			
+			
+				show = false;
+			}
+		}
+		catch(Exception ex){
+			errors.add("не удалось добавить студента: " + ex.toString());
+		}
 	}
-	else{
+
+
+	if(show){
 	
 	GroupsDao dao = ctx.getBean(GroupsDao.class);
 	List<Group> groups = dao.getGroups(depId);
@@ -63,12 +84,12 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 <table>
 	<tr>
 		<td>имя</td>
-		<td><input name="firstName"/></td>
+		<td><input name="firstName" value='<%= firstName == null ? "" : firstName %>'/></td>
 	</tr>
 	
 	<tr>
 		<td>фамилия</td>
-		<td><input name="secondName"/></td>
+		<td><input name="secondName" value='<%= secondName == null ? "" : secondName %>'/></td>
 	</tr>	
 	
 	<tr>
@@ -97,5 +118,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 	
 	<input type="hidden" name="page" value="add_student" />	
 </form>
+
+<jsp:include page="../resources/errors.jsp" />
 
 <% } %>
