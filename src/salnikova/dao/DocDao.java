@@ -42,6 +42,15 @@ public class DocDao {
 		return d;
 	}
 	
+	public void deleteDocument(final Integer docid){
+		Document doc = m_storage.load(Document.class, docid);
+		m_storage.delete(doc);
+
+		Map<String, Object> mm = new HashMap<>();
+		mm.put("id", docid);
+		npjt.update("delete from docdata where id = :id", mm);
+	}
+	
 	
 	public Document findDocument(final Integer controlId) {
 		SearchQuery q = new SearchQuery();

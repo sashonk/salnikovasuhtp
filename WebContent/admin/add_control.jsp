@@ -29,24 +29,35 @@ final Tutor user = tutorsDao.findProfile(request.getUserPrincipal().getName());
 	String name = (String)map.get("name");
 	String maxPointsStr = (String)map.get("maxpoint");
 	
+	List<String> messages = new LinkedList<String>();
+	request.setAttribute("errors", messages);
+	boolean show = true;
 	if(name!=null && maxPointsStr!= null && number!=null){
-		BigDecimal maxPoints = BigDecimal.valueOf(Double.parseDouble(maxPointsStr));
-		Upload doc = (Upload)map.get("examples");
+		try{
+			BigDecimal maxPoints = BigDecimal.valueOf(Double.parseDouble(maxPointsStr));
+			Upload doc = (Upload)map.get("examples");
+			
+			StudentsDao dao = ctx.getBean(StudentsDao.class);
+							
+			Control newCtrl = ctx.getBean(ControlDao.class).createControl((String)name, maxPoints, Integer.parseInt((String)number), user.getId());		
+			
+			if(doc!=null){
+				ctx.getBean(DocDao.class).createDoc(doc.getName(), doc.getContent(), newCtrl.getId());
+			}
+	%> 
+				<div>создан контроль <b><%= name %></b> </div>
+			<%
 		
-		StudentsDao dao = ctx.getBean(StudentsDao.class);
-						
-		Control newCtrl = ctx.getBean(ControlDao.class).createControl((String)name, maxPoints, Integer.parseInt((String)number), user.getId());		
-		
-		if(doc!=null){
-			ctx.getBean(DocDao.class).createDoc(doc.getName(), doc.getContent(), newCtrl.getId());
+			show = false;
 		}
-%> 
-			<div>создан контроль <b><%= name %></b> </div>
-		<%
+		catch(Exception ex){
+			messages.add("не удалось создать контроль: "+ex.toString());
+		}
 		
 		
 	}
-	else{
+	
+	if(show){
 	
 
 %>
@@ -82,5 +93,12 @@ final Tutor user = tutorsDao.findProfile(request.getUserPrincipal().getName());
 	
 	<input type="hidden" name="page" value="add_control" />
 </form>
+
+
+<jsp:include page="../resources/errors.jsp" />
+
+
+
+
 
 <% } %>
