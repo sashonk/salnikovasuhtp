@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+
 <%@ page
 
 	import="salnikova.dao.*" 
@@ -11,7 +12,7 @@
 
 
 
-<form name="f" action="/j_spring_security_check" method="POST">
+<form name="f" action="j_spring_security_check" method="POST">
 <table cellspacing="5">
     <tr>
 	<td>Логин</td>
