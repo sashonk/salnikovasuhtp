@@ -92,10 +92,13 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 <table class='summary'>
 	<tr>
 		<td>студент</td>
-		<% for(Control control : controls) { %>
+		<% 
+		BigDecimal ruffled = BigDecimal.ZERO;
+		for(Control control : controls) { 
+			ruffled = ruffled.add(control.getMaxPoint()); %>
 			<td><div><a href='control.html?id=<%=control.getId() %>'><%= control.getName() %><a></div><div style="font-size: 16px;">(<%= control.getMaxPoint() %>)</div></td>
 		<% } %>
-		<td>сумма</td>
+		<td><div>сумма</div><div> (<%= ruffled %>) </div></td>
 	</tr>
 	<% 
 		
