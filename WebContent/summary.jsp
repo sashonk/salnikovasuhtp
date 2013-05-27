@@ -132,7 +132,7 @@ final WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(r
 				<% BigDecimal total = sDao.getTotalPoints(student.getId());  
 					BigDecimal threshold = BigDecimal.valueOf(35.0);
 				%>
-			<td <%= threshold.compareTo(total) < 0 ? "style='background: #CAFF7A'" : "style='background:#E49595'" %>><%=total  %></td>
+			<td <%= threshold.compareTo(total) <= 0 ? "style='background: #CAFF7A'" : "style='background:#E49595'" %>><%=total  %></td>
 			
 			
 	</tr>
